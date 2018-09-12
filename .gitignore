@@ -16,3 +16,9 @@ tests/coverage_html/
 tests/.coverage
 build/
 tests/report/
+docker/docker-compose.yml
+docker/django/django.values.js
+docker/django/Dockerfile
+docker/postgres/postgres.values.js
+requirements.txt
+idea/
