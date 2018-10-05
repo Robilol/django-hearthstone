@@ -2,10 +2,12 @@
         container_name: {{ container_name }}
         image: postgres:latest
         restart: always
+        volumes:
+            - ../{{ database_storage_location }}:/var/lib/postgresql/data
         environment:
             POSTGRES_USER: {{ user }}
             POSTGRES_PASSWORD: {{ password }}
             POSTGRES_DB: {{ database_name }}
-            PGDATA: ../{{ database_storage_location }}
+#            PGDATA: ../{{ database_storage_location }}
         ports:
             - {{ port }}:5432

@@ -1,6 +1,6 @@
     {{ container_name }}:
         container_name: {{ container_name }}
-        image: adminer:4.6.2
+        image: adminer:latest
         restart: always
         environment:
             ADMINER_PLUGINS: {{ plugins }}

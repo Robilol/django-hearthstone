@@ -40,7 +40,7 @@ module.exports = {
     ],
 
     messages: {
-        info: [
+        writeln: [
             'Database information:',
             'Host: {{ container_name }}',
             'Database name: {{ database_name }}',

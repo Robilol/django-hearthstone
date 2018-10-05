@@ -21,4 +21,5 @@ docker/django/django.values.js
 docker/django/Dockerfile
 docker/postgres/postgres.values.js
 requirements.txt
-idea/
+.idea/
+.idea/*
