@@ -1,0 +1,27 @@
+{% extends "hearthstone/base.html" %}
+
+{% block content %}
+<div class="row my-5">
+  <div class="col-md-12">
+    <h1>Votre collection de cartes</h1>
+
+    <div class="row">
+      {% for card in cards %}
+      <div class="col-3 text-center single-card my-4">
+        <a class="single-card__link" href="{% url 'card' card.id %}">
+          <h4>{{ card.title }}</h4>
+          <img src="https://res.cloudinary.com/ds8br8lm0/image/upload/v1539448305/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
+        </a>
+      </div>
+      {% empty %}
+      <div class="col">
+        Vous n'avez pas encore de cartes.
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+

@@ -1,0 +1,14 @@
+{% extends "hearthstone/base.html" %}
+
+{% block content %}
+<div class="row my-5">
+  <div class="col-md-12">
+    <h1>{{ card.title }}</h1>
+
+    <p class="single-card__detail"><img src="https://res.cloudinary.com/ds8br8lm0/image/upload/v1539448305/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__detail__img"></p>
+  </div>
+</div>
+
+{% endblock content %}
+
+

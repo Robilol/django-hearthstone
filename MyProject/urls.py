@@ -17,16 +17,21 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
+from hearthstone.views import home, register
 
 urlpatterns = [
-    path('hearthstone/', include('hearthstone.urls')),
     url(r'^admin/', admin.site.urls),
+    path('', include('hearthstone.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
-
 
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns = [
-                      url(r'^__debug__/', include(debug_toolbar.urls)),
+                      path('__debug__/', include(debug_toolbar.urls)),
+
+                      # For django versions before 2.0:
+                      # url(r'^__debug__/', include(debug_toolbar.urls)),
+
                   ] + urlpatterns
-    SHOW_TOOLBAR_CALLBACK = True

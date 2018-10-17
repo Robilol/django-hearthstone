@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "hearthstone/base.html" %}
 
-</body>
-</html>
+{% block content %}
+
+<!-- Jumbotron Header -->
+<header class="jumbotron my-4">
+  <h1 class="display-3">Bienvenue sur Hearthstone</h1>
+  <p class="lead">Ceci est un site de simulation de partie de cartes en ligne.<br>
+    <a href="{% url 'register' %}">Inscrivez-vous</a> ou <a href="{% url 'login' %}">connectez-vous</a> afin de gagner des cartes, construire vos decks, et jouer !</p>
+  <a href="{% url 'game' %}" class="btn btn-primary btn-lg">Jouer</a>
+  <h2 class="display-6 my-4">Quelques cartes...</h2>
+
+  <div class="row">
+    {% for card in cards|slice:":4" %}
+    <div class="col-3 text-center single-card my-4">
+      <a class="single-card__link" href="{% url 'card' card.id %}">
+        <h4>{{ card.title }}</h4>
+        <img src="https://res.cloudinary.com/ds8br8lm0/image/upload/v1539448305/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
+      </a>
+    </div>
+    {% empty %}
+    <div class="col">
+      <p>Aucune carte trouvée.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+</header>
+
+<div class="row my-5">
+  <div class="col-md-12">
+
+    {% if request.user.is_authenticated %}
+    <h2>Vos crédits</h2>
+    <div class="credits mb-4">
+      <p>Il vous reste : {{ request.user.profile.credit }} crédits.</p>
+
+      {% if request.user.profile.credit >= 100 %}
+      <p><a href="{% url 'buyCards' %}" class="btn btn-outline-primary btn-sm">Acheter un paquet de 8 cartes</a> <span class="small">Coût : 100 crédits</span></p>
+      {% endif %}
+
+    </div>
+    {% endif %}
+
+    <h2>Liste des dernières parties</h2>
+    <div class="games mb-5">
+
+      {% for game in games %}
+      <p class="lead">{{ game.user1.username }} vs. {{ game.user2.username }} <a class="small" href="{% url 'game' %}">Voir le match</a></p>
+      {% empty %}
+      <p>Aucune partie pour le moment.</p>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends "hearthstone/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row my-5">
+  <div class="col-md-12">
+    {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    {% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+
+      {{ form|crispy }}
+
+      <div class="form-group">
+        <button class="btn btn-outline-primary" type="submit">Je me connecte</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </div>
+    </form>
+
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <div class="border-top pt-3 mb-4">
+      <small class="text-muted">
+      <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a><br>
+        Pas encore de compte ? <a class="ml-3" href="{% url 'register' %}">Inscrivez-vous</a><br>
+      </small>
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "hearthstone/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row my-5">
+  <div class="col-md-12">
+    <h1>Inscription</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Rejoignez-nous !</legend>
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-primary" type="submit">Je m'inscris</button>
+      </div>
+    </form>
+    <div class="border-top pt-3 mb-4">
+      <small class="text-muted">
+        Déjà inscrit ? <a class="ml-2" href="{% url 'login' %}">Connectez-vous</a>
+      </small>
+    </div>
+  </div>
+</div>
+{% endblock content %}
