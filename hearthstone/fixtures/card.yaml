@@ -1,0 +1,13 @@
+- model: hearthstone.card
+  fields:
+      title: Darkscale Healer
+      cost: 5
+      damage: 4
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Booty Bay Bodyguard
+      cost: 5
+      damage: 5
+      health: 4

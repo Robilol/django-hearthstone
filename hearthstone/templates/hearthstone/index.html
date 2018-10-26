@@ -4,9 +4,7 @@
 
 <!-- Jumbotron Header -->
 <header class="jumbotron my-4">
-  <h1 class="display-3">Bienvenue sur Hearthstone</h1>
-  <p class="lead">Ceci est un site de simulation de partie de cartes en ligne.<br>
-    <a href="{% url 'register' %}">Inscrivez-vous</a> ou <a href="{% url 'login' %}">connectez-vous</a> afin de gagner des cartes, construire vos decks, et jouer !</p>
+  <h1 class="display-3">Django Hearthstone</h1>
   <a href="{% url 'game' %}" class="btn btn-primary btn-lg">Jouer</a>
   <h2 class="display-6 my-4">Quelques cartes...</h2>
 
@@ -15,7 +13,7 @@
     <div class="col-3 text-center single-card my-4">
       <a class="single-card__link" href="{% url 'card' card.id %}">
         <h4>{{ card.title }}</h4>
-        <img src="https://res.cloudinary.com/ds8br8lm0/image/upload/v1539448305/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
+        <img src="https://res.cloudinary.com/dglr48luk/image/upload/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
       </a>
     </div>
     {% empty %}

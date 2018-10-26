@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'skyflow',
         'USER': 'skyflow',
         'PASSWORD': 'root',
-        'HOST': 'postgres_2rlg45q1jmvtn7vn',
+        'HOST': 'postgres_2rlg4brojnfqfoi0',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }

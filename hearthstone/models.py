@@ -32,6 +32,9 @@ class Deck(models.Model):
 class Card(models.Model):
     title = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, null=True, blank=True)
+    cost = models.IntegerField(default=1)
+    health = models.IntegerField(default=1)
+    damage = models.IntegerField(default=1)
 
     def __str__(self):
         return self.title
@@ -40,11 +43,11 @@ class Card(models.Model):
 @receiver(pre_save, sender=Card)
 def slugify(sender, instance, *args, **kwargs):
     instance.slug = instance.title\
-        .replace(' ', '_')\
-        .replace('\'', '_')\
-        .replace(',', '_')\
-        .replace('!', '_')\
-        .replace('-', '_')
+        .replace(' ', '-')\
+        .replace('\'', '-')\
+        .replace(',', '-')\
+        .replace('!', '-')\
+        .replace('-', '-')
     instance.slug = instance.slug.replace('__', '_')
     instance.slug = instance.slug.rstrip('_')
 
