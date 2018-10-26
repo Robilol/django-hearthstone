@@ -1,0 +1,340 @@
+- model: hearthstone.card
+  fields:
+      title: Acidic Swamp Ooze
+      cost: 5
+      damage: 4
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Archmage
+      cost: 6
+      damage: 4
+      health: 7
+
+- model: hearthstone.card
+  fields:
+      title: Bloodfen Raptor
+      cost: 2
+      damage: 3
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Bluegill Warrior
+      cost: 2
+      damage: 2
+      health: 1
+
+- model: hearthstone.card
+  fields:
+      title: Booty Bay Bodyguard
+      cost: 5
+      damage: 5
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Boulderfist Ogre
+      cost: 6
+      damage: 6
+      health: 7
+
+- model: hearthstone.card
+  fields:
+      title: Chillwind Yeti
+      cost: 4
+      damage: 4
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Core Hound
+      cost: 7
+      damage: 9
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Dalaran Mage
+      cost: 3
+      damage: 1
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Darkscale Healer
+      cost: 5
+      damage: 4
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Dragonling Mechanic
+      cost: 4
+      damage: 2
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Dread Infernal
+      cost: 6
+      damage: 6
+      health: 6
+
+- model: hearthstone.card
+  fields:
+      title: Elven Archer
+      cost: 1
+      damage: 1
+      health: 1
+
+- model: hearthstone.card
+  fields:
+      title: Fire Elemental
+      cost: 6
+      damage: 6
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Frostwolf Grunt
+      cost: 2
+      damage: 2
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Frostwolf Warlord
+      cost: 5
+      damage: 4
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Gnomish Inventor
+      cost: 4
+      damage: 2
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Goldshire Footman
+      cost: 1
+      damage: 1
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Grimscale Oracle
+      cost: 1
+      damage: 1
+      health: 1
+
+- model: hearthstone.card
+  fields:
+      title: Guardian of Kings
+      cost: 7
+      damage: 5
+      health: 6
+
+- model: hearthstone.card
+  fields:
+      title: Darkscale Healer
+      cost: 5
+      damage: 4
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Booty Bay Bodyguard
+      cost: 5
+      damage: 5
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Gurubashi Berserker
+      cost: 5
+      damage: 2
+      health: 7
+
+- model: hearthstone.card
+  fields:
+      title: Houndmaster
+      cost: 4
+      damage: 4
+      health: 3
+
+- model: hearthstone.card
+  fields:
+      title: Ironbark Protector
+      cost: 8
+      damage: 8
+      health: 8
+
+- model: hearthstone.card
+  fields:
+      title: Ironforge Rifleman
+      cost: 3
+      damage: 2
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Ironfury Grizzly
+      cost: 3
+      damage: 3
+      health: 3
+
+- model: hearthstone.card
+  fields:
+      title: Kobold Geomancer
+      cost: 2
+      damage: 2
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Kor'kron Elite
+      cost: 4
+      damage: 4
+      health: 3
+
+- model: hearthstone.card
+  fields:
+      title: Lord of the Arena
+      cost: 6
+      damage: 6
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Magma Rager
+      cost: 3
+      damage: 5
+      health: 1
+
+- model: hearthstone.card
+  fields:
+      title: Murloc Raider
+      cost: 1
+      damage: 2
+      health: 1
+
+- model: hearthstone.card
+  fields:
+      title: Murloc Tidehunter
+      cost: 2
+      damage: 2
+      health: 1
+
+- model: hearthstone.card
+  fields:
+      title: Nightblade
+      cost: 5
+      damage: 4
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Northshire Cleric
+      cost: 1
+      damage: 1
+      health: 3
+
+- model: hearthstone.card
+  fields:
+      title: Novice Engineer
+      cost: 2
+      damage: 1
+      health: 1
+
+- model: hearthstone.card
+  fields:
+      title: Oasis Snapjaw
+      cost: 4
+      damage: 2
+      health: 7
+
+- model: hearthstone.card
+  fields:
+      title: Ogre Magi
+      cost: 4
+      damage: 4
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Raid Leader
+      cost: 3
+      damage: 2
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Razorfen Hunter
+      cost: 3
+      damage: 2
+      health: 3
+
+- model: hearthstone.card
+  fields:
+      title: Reckless Rocketeer
+      cost: 6
+      damage: 5
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: River Crocolisk
+      cost: 2
+      damage: 2
+      health: 3
+
+- model: hearthstone.card
+  fields:
+      title: Sen'jin Shieldmasta
+      cost: 4
+      damage: 3
+      health: 5
+
+- model: hearthstone.card
+  fields:
+      title: Shattered Sun Cleric
+      cost: 3
+      damage: 3
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Silverback Patriarch
+      cost: 3
+      damage: 1
+      health: 4
+
+- model: hearthstone.card
+  fields:
+      title: Starving Buzzard
+      cost: 5
+      damage: 3
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Stonetusk Boar
+      cost: 1
+      damage: 1
+      health: 1
+- model: hearthstone.card
+  fields:
+      title: Stormpike Commando
+      cost: 5
+      damage: 4
+      health: 2
+
+- model: hearthstone.card
+  fields:
+      title: Stormwind Champion
+      cost: 7
+      damage: 6
