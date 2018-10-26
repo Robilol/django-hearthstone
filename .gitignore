@@ -26,3 +26,4 @@ docker/postgres/postgres.values.js
 requirements.txt
 .idea/
 .idea/*
+MyProject/setting.py
