@@ -8,6 +8,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('game/', views.game, name='game'),
     path('card/<int:card_id>', views.card, name='card'),
+    path('sell-card/<int:carduser_id>', views.sellCard, name='sellCard'),
     path('buy-cards/', views.buyCards, name='buyCards'),
     path('my-cards/', views.myCards, name='myCards'),
     path('my-decks/', views.myDecks, name='myDecks'),
