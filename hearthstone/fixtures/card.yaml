@@ -182,7 +182,7 @@
 
 - model: hearthstone.card
   fields:
-      title: Ironfury Grizzly
+      title: Ironfur Grizzly
       cost: 3
       damage: 3
       health: 3
