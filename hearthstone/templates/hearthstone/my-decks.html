@@ -5,10 +5,12 @@
   <div class="col-md-12">
     <h1>Vos decks de cartes</h1>
 
+    <a href="{% url 'deckCreate' %}" class="btn btn-primary">Creer un deck</a>
+
     <div class="row">
       {% for deck in decks %}
       <div class="col-3 text-center my-4">
-        ...
+        <a href="{% url 'deck' deck.id %}">{{deck.title}}</a>
       </div>
       {% empty %}
       <div class="col">
