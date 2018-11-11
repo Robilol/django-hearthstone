@@ -1,5 +1,5 @@
 from random import randint
-
+from pprint import pprint
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
@@ -47,7 +47,8 @@ def game(request):
 
 def card(request, card_id):
     card = get_object_or_404(Card, pk=card_id)
-    return render(request, 'hearthstone/card.html', {'card': card})
+    cardUser = CardUser.objects.all().filter(user_id=request.user.id, card_id=card_id).first()
+    return render(request, 'hearthstone/card.html', {'card': card, 'cardUser':cardUser})
 
 
 def buyCards(request):
@@ -70,6 +71,13 @@ def buyCards(request):
         return redirect('home')
 
     return render(request, 'hearthstone/buy-cards.html', {'cards': cards})
+
+def sellCard(request, carduser_id):
+    card = get_object_or_404(CardUser, pk=carduser_id)
+    card.delete()
+    request.user.profile.credit += 10
+    request.user.save()
+    return redirect('myCards')
 
 
 def myCards(request):
