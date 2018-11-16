@@ -6,7 +6,7 @@
   <div class="col-md-12">
     <h1>{{ card.title }}</h1>
     <p class="single-card__detail"><img src="https://res.cloudinary.com/dglr48luk/image/upload/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__detail__img"></p>
-    <button><a href="../sell-card/{{ cardUser.id }}">Vendre</a></button>
+    <button><a href="../sell-card/{{ card.pk }}">Vendre</a></button>
   </div>
 </div>
 
