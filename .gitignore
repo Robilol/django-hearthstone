@@ -23,7 +23,6 @@ docker/mailhog/mailhog.values.js
 db.sqlite3
 docker/django/Dockerfile
 docker/postgres/postgres.values.js
-requirements.txt
 .idea/
 .idea/*
 MyProject/setting.py
