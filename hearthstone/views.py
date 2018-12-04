@@ -10,6 +10,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .models import Card, Deck, Game
+from django.contrib.auth.models import User
 
 
 def home(request):
@@ -39,6 +40,7 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
+
 
 def changePassword(request):
     if request.method == 'POST':
@@ -188,4 +190,19 @@ def updateDeck(request, deck_id):
 
         cardsUser = user.cards.all()
 
-        return render(request, 'hearthstone/update-deck.html', {'cards': cardsUser, 'deck': deck, 'cardsUsed': cardsUsedId})
+        return render(request, 'hearthstone/update-deck.html',
+                      {'cards': cardsUser, 'deck': deck, 'cardsUsed': cardsUsedId})
+
+
+def playerAll(request):
+    players = User.objects.all()
+
+    return render(request, 'hearthstone/player-all.html', {'players': players})
+
+
+def player(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+
+    decks = user.decks.all()
+
+    return render(request, 'hearthstone/player.html', {'player': user, 'decks': decks})

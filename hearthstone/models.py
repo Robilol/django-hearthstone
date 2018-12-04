@@ -20,6 +20,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+
 class Card(models.Model):
     title = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, null=True, blank=True)
@@ -31,8 +32,9 @@ class Card(models.Model):
     def __str__(self):
         return self.title
 
+
 class Deck(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='decks')
     title = models.CharField(max_length=100)
     cards = models.ManyToManyField(Card, related_name="decks")
 
@@ -40,17 +42,17 @@ class Deck(models.Model):
         return self.title
 
 
-
 @receiver(pre_save, sender=Card)
 def slugify(sender, instance, *args, **kwargs):
-    instance.slug = instance.title\
-        .replace(' ', '-')\
-        .replace('\'', '-')\
-        .replace(',', '-')\
-        .replace('!', '-')\
+    instance.slug = instance.title \
+        .replace(' ', '-') \
+        .replace('\'', '-') \
+        .replace(',', '-') \
+        .replace('!', '-') \
         .replace('-', '-')
     instance.slug = instance.slug.replace('__', '_')
     instance.slug = instance.slug.rstrip('_')
+
 
 class Game(models.Model):
     user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_one')

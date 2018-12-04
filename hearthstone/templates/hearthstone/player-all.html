@@ -1,0 +1,12 @@
+{% extends "hearthstone/base.html" %}
+
+{% block content %}
+<ul>
+  {% for player in players %}
+  <li><a href="{{ player.pk }}">{{ player.username }}</a></li>
+  {% endfor %}
+</ul>
+
+{% endblock content %}
+
+

@@ -19,4 +19,6 @@ urlpatterns = [
     path('deck/delete/<int:deck_id>', views.deleteDeck, name='deckDelete'),
     path('deck/update/<int:deck_id>', views.updateDeck, name='deckUpdate'),
     path('deck/create', views.createDeck, name='deckCreate'),
+    path('player/all', views.playerAll, name='playerAll'),
+    path('player/<int:user_id>', views.player, name='player'),
 ]
