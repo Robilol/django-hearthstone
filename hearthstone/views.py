@@ -6,9 +6,9 @@ from django.template import loader
 from .forms import UserRegisterForm
 from .forms import DeckForm
 from django.contrib import messages
-
-from pprint import pprint
-
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
 from .models import Card, Deck, Game
 
 
@@ -39,6 +39,22 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
+
+def changePassword(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Votre mot de passe a bien été changé !')
+            return redirect('changePassword')
+        else:
+            messages.error(request, 'Merci de corriger les erreurs ci-dessous')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'registration/change-password.html', {
+        'form': form
+    })
 
 
 def game(request):

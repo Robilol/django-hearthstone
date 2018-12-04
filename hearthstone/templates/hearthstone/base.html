@@ -62,6 +62,10 @@
         {% endif %}
         <span class="flex-centered text-light">|</span>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'changePassword' %}">Changer de mot de passe</a>
+        </li>
+        <span class="flex-centered text-light">|</span>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'app_logout' %}">Se déconnecter</a>
         </li>
         {% endif %}
