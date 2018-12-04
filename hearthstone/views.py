@@ -77,11 +77,18 @@ def buyCards(request):
 def sellCard(request, card_id):
     card = get_object_or_404(Card, pk=card_id)
     user = request.user
-    user.cards.remove(card)
-    user.decks
+    decksUser = Deck.objects.all().filter(owner=user)
+    for deckUser in decksUser:
+        cardsDeck = deckUser.cards.all()
+        for cardDeck in cardsDeck:
+            if card == cardDeck:
+                messages.warning(request, f'Vous ne pouvez pas vendre une carte faisant partie de l\'un de vos Deck')
+                return redirect('myCards')
 
+    user.cards.remove(card)
     user.profile.credit += 10
     user.save()
+    messages.success(request, f'La carte a bien été vendu, elle vous a rapporté 10 poussières')
     return redirect('myCards')
 
 
@@ -137,9 +144,9 @@ def updateDeck(request, deck_id):
         deck = get_object_or_404(Deck, pk=deck_id)
         cards = request.POST.items()
 
-        cardDeck = deck.cards.all()
+        cardsDeck = deck.cards.all()
 
-        for cardDeck in cardDeck:
+        for cardDeck in cardsDeck:
             deck.cards.remove(cardDeck)
 
         for key, value in cards:
