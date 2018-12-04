@@ -9,7 +9,7 @@ from django.contrib import messages
 
 from pprint import pprint
 
-from .models import Card, Deck, Game, CardUser, CardDeck
+from .models import Card, Deck, Game
 
 
 def home(request):
@@ -47,8 +47,7 @@ def game(request):
 
 def card(request, card_id):
     card = get_object_or_404(Card, pk=card_id)
-    cardUser = CardUser.objects.all().filter(user_id=request.user.id, card_id=card_id).first()
-    return render(request, 'hearthstone/card.html', {'card': card, 'cardUser':cardUser})
+    return render(request, 'hearthstone/card.html', {'card': card})
 
 
 def buyCards(request):
@@ -59,8 +58,10 @@ def buyCards(request):
             random_index = randint(0, cardCounter - 1)
             card = Card.objects.all()[random_index]
             cards.append(card)
-            cardUser = CardUser(card=card, user=request.user)
-            cardUser.save()
+
+            user = request.user
+            user.cards.add(card)
+
         request.user.profile.credit -= 100
         request.user.save()
     elif request.user.is_authenticated and request.user.profile.credit < 100:
@@ -72,27 +73,27 @@ def buyCards(request):
 
     return render(request, 'hearthstone/buy-cards.html', {'cards': cards})
 
-def sellCard(request, carduser_id):
-    card = get_object_or_404(CardUser, pk=carduser_id)
-    card.delete()
-    request.user.profile.credit += 10
-    request.user.save()
+
+def sellCard(request, card_id):
+    card = get_object_or_404(Card, pk=card_id)
+    user = request.user
+    user.cards.remove(card)
+    user.decks
+
+    user.profile.credit += 10
+    user.save()
     return redirect('myCards')
 
 
 def myCards(request):
-    cardsUser = CardUser.objects.all().filter(user_id=request.user.id)
-    cards = []
-
-    for cardUser in cardsUser:
-        card = cardUser.card
-        cards.append(card)
+    user = request.user
+    cards = user.cards.all()
 
     return render(request, 'hearthstone/my-cards.html', {'cards': cards})
 
 
 def myDecks(request):
-    decksUser = Deck.objects.all().filter(user_id=request.user.id)
+    decksUser = Deck.objects.all().filter(owner=request.user)
 
     return render(request, 'hearthstone/my-decks.html', {'decks': decksUser})
 
@@ -100,11 +101,7 @@ def myDecks(request):
 def deck(request, deck_id):
     deck = get_object_or_404(Deck, pk=deck_id)
 
-    cardsDeck = CardDeck.objects.all().filter(deck_id=deck_id)
-    cards = []
-
-    for card in cardsDeck:
-        cards.append(card.card)
+    cards = deck.cards.all()
 
     return render(request, 'hearthstone/deck.html', {'cards': cards, 'deck': deck})
 
@@ -115,7 +112,7 @@ def createDeck(request):
         if form.is_valid():
             deck = Deck()
             deck = form.save(commit=False)
-            deck.user = request.user
+            deck.owner = request.user
             deck.save()
 
             title = form.cleaned_data.get('title')
@@ -140,10 +137,10 @@ def updateDeck(request, deck_id):
         deck = get_object_or_404(Deck, pk=deck_id)
         cards = request.POST.items()
 
-        cardDeck = CardDeck.objects.all().filter(deck_id=deck_id)
+        cardDeck = deck.cards.all()
 
         for cardDeck in cardDeck:
-            cardDeck.delete()
+            deck.cards.remove(cardDeck)
 
         for key, value in cards:
             if key[:4] == 'card':
@@ -151,24 +148,21 @@ def updateDeck(request, deck_id):
 
                 card = get_object_or_404(Card, pk=cardId)
 
-                cardDeck = CardDeck(card=card, deck=deck)
-                cardDeck.save()
+                deck.cards.add(card)
 
         return redirect('deck', deck.pk)
     else:
         deck = get_object_or_404(Deck, pk=deck_id)
 
-        cardsUser = CardUser.objects.all().filter(user_id=request.user.id)
-        cards = []
+        user = request.user
 
-        cardsDeck = CardDeck.objects.all().filter(deck_id=deck_id)
-        cardsUsed = []
+        cardsUsed = deck.cards.all()
 
-        for card in cardsDeck:
-            cardsUsed.append(card.card.pk)
+        cardsUsedId = []
 
-        for cardUser in cardsUser:
-            card = cardUser.card
-            cards.append(card)
+        for card in cardsUsed:
+            cardsUsedId.append(card.pk)
 
-        return render(request, 'hearthstone/update-deck.html', {'cards': cards, 'deck': deck, 'cardsUsed' : cardsUsed})
+        cardsUser = user.cards.all()
+
+        return render(request, 'hearthstone/update-deck.html', {'cards': cardsUser, 'deck': deck, 'cardsUsed': cardsUsedId})
