@@ -25,4 +25,4 @@ docker/django/Dockerfile
 docker/postgres/postgres.values.js
 .idea/
 .idea/*
-MyProject/setting.py
+MyProject/settings.py
