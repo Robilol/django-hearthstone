@@ -58,8 +58,8 @@ class CardUser(models.Model):
 
 
 class CardDeck(models.Model):
-    card = models.ForeignKey(Card, on_delete=models.DO_NOTHING)
-    deck = models.ForeignKey(Deck, on_delete=models.DO_NOTHING)
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
 
 
 class Game(models.Model):

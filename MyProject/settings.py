@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'MyProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'skyflow',
-        'USER': 'skyflow',
+        'NAME': 'django',
+        'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'postgres_2rlg4brojnfqfoi0',
+        'HOST': 'postgres_1nw3werl4ajmvtq93b',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
