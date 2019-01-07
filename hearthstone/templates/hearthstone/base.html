@@ -58,7 +58,7 @@
           <a class="nav-link" href="{% url 'playerAll' %}">Joueurs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Forum</a>
+          <a class="nav-link" href="{% url 'forum' %}">Forum</a>
         </li>
         {% if request.user.is_staff %}
         <span class="flex-centered text-light">|</span>

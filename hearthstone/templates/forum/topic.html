@@ -1,0 +1,42 @@
+{% extends "hearthstone/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row my-5">
+  <div class="col-md-12">
+    <h1>Sujet: {{topic.title|default:""}}</h1>
+
+    <div class="forum__links my-4">
+      <a href="{% url 'forum' %}" class="btn btn-primary forum__links__single">Retour au forum</a>
+    </div>
+
+    <div class="topic list-group">
+      <p class="list-group-item">Par {{topic.author.username}} <span>le {{topic.created_at}}</span></p>
+      <p class="list-group-item">{{topic.content}}</p>
+    </div>
+
+    <div class="messages my-4">
+      {% for msg in msgs %}
+      <div class="messages__single my-2 list-group">
+        <p class="list-group-item">Par {{msg.author.username}}</p>
+        <p class="list-group-item">{{msg.content}}</p>
+      </div>
+      {% empty %}
+      <p class="list-group-item">Aucun message pour le moment.</p>
+      {% endfor %}
+    </div>
+
+    {% if request.user.is_authenticated %}
+    <form class="mb-5" method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-outline-primary">Enregistrer</button>
+    </form>
+    {% else %}
+    <p><a href="{% url 'app_login' %}">Connectez-vous</a> pour répondre au sujet.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}
+
