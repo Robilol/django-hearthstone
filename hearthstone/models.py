@@ -8,6 +8,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credit = models.IntegerField(default=200)
+    isFirstConnection = models.BooleanField(default=True)
 
 
 @receiver(post_save, sender=User)

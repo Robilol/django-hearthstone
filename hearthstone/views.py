@@ -26,6 +26,29 @@ def home(request):
         'cards': Card.objects.all(),
         'slugs': slugs,
     }
+
+    if request.user.is_authenticated and request.user.profile.isFirstConnection is True:
+
+        user = request.user
+        # Ajouts cartes
+
+        allCards = Card.objects.all()
+
+        deck = Deck()
+        deck.title = 'Deck de base'
+        deck.owner = user
+        deck.save()
+
+        # card = get_object_or_404(Card, pk=cardId)
+
+        for i in range(0, 30):
+            card = allCards[randint(0, allCards.count() - 1)]
+            user.cards.add(card)
+            deck.cards.add(card)
+
+        user.profile.isFirstConnection = False
+        user.save()
+
     return render(request, 'hearthstone/index.html', context)
 
 
@@ -36,6 +59,7 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Le compte de {username} a bien été créé !')
+
             return redirect('home')
     else:
         form = UserRegisterForm()
