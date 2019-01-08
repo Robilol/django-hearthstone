@@ -11,14 +11,20 @@
       {% csrf_token %}
       <div class="row"><input type="submit" class="btn" value="Enregistrer"></div>
       <div class="row">
-        {% for card in cards %}
+        {% for cardUser in user.cardsuser_set.all %}
+
+        {% for i in "x"|rjust:cardUser.quantity %}
         <div class="col-2 text-center single-card my-4">
-          <h4>{{ card.title }}</h4>
+          <h4>{{ cardUser.card.title }}</h4>
           <img
-            src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ card.slug }}.png"
-            alt="{{ card.title }}" class="single-card__link__img card {% if card.pk in cardsUsed %}selected{% endif %}">
-          <input type="checkbox" name="card_{{card.pk}}" style="display: none" {% if card.pk in cardsUsed %}checked{% endif %}>
+            src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ cardUser.card.slug }}.png"
+            alt="{{ cardUser.card.title }}"
+            class="single-card__link__img card {% if card.pk in cardsUsed %}selected{% endif %}">
+          {% if cardUser.quantity > 1 %}<span class="quantity">x{{ cardUser.quantity }}</span>{% endif %}
+          <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none" {% if
+                 cardUser.card.id in cardsUsed %}checked{% endif %}>
         </div>
+        {% endfor %}
         {% empty %}
         <div class="col">
           Vous n'avez pas encore de cartes.

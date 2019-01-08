@@ -22,25 +22,37 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
+class Deck(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
 class Card(models.Model):
     title = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, null=True, blank=True)
     cost = models.IntegerField(default=1)
     health = models.IntegerField(default=1)
     damage = models.IntegerField(default=1)
-    owner = models.ManyToManyField(User, related_name="cards")
+    deck = models.ManyToManyField(Deck, related_name="deck", through='CardsDeck')
+    owner = models.ManyToManyField(User, related_name="cards", through='CardsUser')
 
     def __str__(self):
         return self.title
 
 
-class Deck(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='decks')
-    title = models.CharField(max_length=100)
-    cards = models.ManyToManyField(Card, related_name="decks")
+class CardsUser(models.Model):
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
 
-    def __str__(self):
-        return self.title
+
+class CardsDeck(models.Model):
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
 
 
 @receiver(pre_save, sender=Card)

@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-from .models import Card, Deck, Game, Topic, Message
+from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck
 from django.contrib.auth.models import User
 from django.db.models import Count
 
@@ -27,27 +27,36 @@ def home(request):
         'slugs': slugs,
     }
 
+    # ajout cartes first co
+
     if request.user.is_authenticated and request.user.profile.isFirstConnection is True:
-
-        user = request.user
-        # Ajouts cartes
-
-        allCards = Card.objects.all()
 
         deck = Deck()
         deck.title = 'Deck de base'
-        deck.owner = user
+        deck.owner = request.user
         deck.save()
 
-        # card = get_object_or_404(Card, pk=cardId)
+        number_of_card = Card.objects.count()
+        for i in range(30):
+            random_card = Card.objects.all()[randint(0, number_of_card - 1)]
+            card, created = CardsUser.objects.get_or_create(user=request.user, card=random_card,
+                                                            defaults={'quantity': 1})
+            if created:
+                card.save()
+            else:
+                card.quantity += 1
+                card.save()
 
-        for i in range(0, 30):
-            card = allCards[randint(0, allCards.count() - 1)]
-            user.cards.add(card)
-            deck.cards.add(card)
+            cardDeck, created = CardsDeck.objects.get_or_create(deck=deck, card=random_card,
+                                                                defaults={'quantity': 1})
+            if created:
+                cardDeck.save()
+            else:
+                cardDeck.quantity += 1
+                cardDeck.save()
 
-        user.profile.isFirstConnection = False
-        user.save()
+        request.user.profile.isFirstConnection = False
+        request.user.save()
 
     return render(request, 'hearthstone/index.html', context)
 
@@ -93,18 +102,27 @@ def card(request, card_id):
 
 
 def buyCards(request):
-    cardCounter = Card.objects.all().count()
+    nb_cards = Card.objects.all().count()
     cards = []
+    credit = request.user.profile.credit
     if request.user.is_authenticated and request.user.profile.credit >= 100:
+
         for i in range(8):
-            random_index = randint(0, cardCounter - 1)
-            card = Card.objects.all()[random_index]
-            cards.append(card)
+            random_index = randint(0, nb_cards - 1)
+            random_card = Card.objects.all()[random_index]
 
-            user = request.user
-            user.cards.add(card)
+            card, created = CardsUser.objects.get_or_create(user=request.user, card=random_card,
+                                                            defaults={'quantity': 1})
+            if created:
+                card.save()
+            else:
+                card.quantity += 1
+                card.save()
 
-        request.user.profile.credit -= 100
+            cards.append(random_card)
+
+        credit -= 100
+        request.user.profile.credit = credit
         request.user.save()
     elif request.user.is_authenticated and request.user.profile.credit < 100:
         messages.warning(request, f'Vous n\'avez pas assez de crédit :(')
@@ -135,10 +153,7 @@ def sellCard(request, card_id):
 
 
 def myCards(request):
-    user = request.user
-    cards = user.cards.all()
-
-    return render(request, 'hearthstone/my-cards.html', {'cards': cards})
+    return render(request, 'hearthstone/my-cards.html', {})
 
 
 def myDecks(request):
@@ -150,9 +165,7 @@ def myDecks(request):
 def deck(request, deck_id):
     deck = get_object_or_404(Deck, pk=deck_id)
 
-    cards = deck.cards.all()
-
-    return render(request, 'hearthstone/deck.html', {'cards': cards, 'deck': deck})
+    return render(request, 'hearthstone/deck.html', {'deck': deck})
 
 
 def createDeck(request):
@@ -205,7 +218,7 @@ def updateDeck(request, deck_id):
 
         user = request.user
 
-        cardsUsed = deck.cards.all()
+        cardsUsed = deck.cardsdeck_set.all()
 
         cardsUsedId = []
 
@@ -215,7 +228,7 @@ def updateDeck(request, deck_id):
         cardsUser = user.cards.all()
 
         return render(request, 'hearthstone/update-deck.html',
-                      {'cards': cardsUser, 'deck': deck, 'cardsUsed': cardsUsedId})
+                      {'deck': deck, 'cardsUsed': cardsUsedId})
 
 
 def playerAll(request):

@@ -61,3 +61,10 @@ footer {
 .single-card__link__img {
     width: 100%;
 }
+
+.single-card .quantity {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+}

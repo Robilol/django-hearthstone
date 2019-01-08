@@ -10,11 +10,12 @@
 
     <h2>Liste des cartes :</h2>
     <div class="row">
-      {% for card in cards %}
+      {% for cardsdeck in deck.cardsdeck_set.all %}
       <div class="col-3 text-center single-card my-4">
-        <a class="single-card__link" href="{% url 'card' card.id %}">
-          <h4>{{ card.title }}</h4>
-          <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
+        <a class="single-card__link" href="{% url 'card' cardsdeck.card.id %}">
+          <h4>{{ cardsdeck.card.title }}</h4>
+          <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ cardsdeck.card.slug }}.png" alt="{{ cardsdeck.card.title }}" class="single-card__link__img">
+          {% if card.quantity > 1 %}<span class="quantity">x{{ card.quantity }}</span>{% endif %}
         </a>
       </div>
       {% empty %}

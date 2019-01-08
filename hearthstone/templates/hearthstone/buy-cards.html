@@ -11,6 +11,7 @@
         <a class="single-card__link" href="{% url 'card' card.id %}">
           <h4>{{ card.title }}</h4>
           <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
+          {% if card.quantity > 1 %}<span class="quantity">x{{ card.quantity }}</span>{% endif %}
         </a>
       </div>
       {% endfor %}

@@ -6,11 +6,12 @@
     <h1>Votre collection de cartes</h1>
 
     <div class="row">
-      {% for card in cards %}
+      {% for cardUser in user.cardsuser_set.all %}
       <div class="col-3 text-center single-card my-4">
-        <a class="single-card__link" href="{% url 'card' card.id %}">
-          <h4>{{ card.title }}</h4>
-          <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
+        <a class="single-card__link" href="{% url 'card' cardUser.card.id %}">
+          <h4>{{ cardUser.card.title }}</h4>
+          <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ cardUser.card.slug }}.png" alt="{{ cardUser.card.title }}" class="single-card__link__img">
+          {% if cardUser.quantity > 1 %}<span class="quantity">x{{ cardUser.quantity }}</span>{% endif %}
         </a>
       </div>
       {% empty %}
