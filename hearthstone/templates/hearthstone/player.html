@@ -3,34 +3,34 @@
 {% block content %}
 <div class="row my-5">
   <div class="col">
-  <h1 class="text-center">Joueur : {{ player.username }}</h1>
+    <h1 class="text-center">Joueur : {{ profile.user.username }}</h1>
   </div>
   <div class="col-md-12">
-    <h1>Liste des decks</h1>
-
     <div class="row">
-      {% for deck in decks %}
-      <div class="col-12 text-center my-4">
-        <h3>{{deck.title}}</h3>
-      </div>
-      <div class="row">
-        {% for card in deck.cards.all %}
-        <div class="col-2 text-center single-card my-4">
-          <a class="single-card__link" href="{% url 'card' card.id %}">
-            <h4>{{ card.title }}</h4>
-            <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__link__img">
-          </a>
-        </div>
-        {% empty %}
-           <div class="col text-center">Pas de cartes</div>
-        {% endfor %}
-      </div>
-      {% empty %}
-      <div class="col">
-        Le joueur n'a pas encore de deck
-      </div>
-      {% endfor %}
+      <p><strong>Identifiant : </strong>{{profile.user.username}}</p>
     </div>
+    <div class="row">
+      <p><strong>Crédits : </strong>{{profile.credit}}</p>
+    </div>
+    <div class="row">
+      <p><strong>ELO : </strong>{{profile.elo}}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for cardUser in profile.user.cardsuser_set.all %}
+    <div class="col-2 text-center single-card my-4">
+      <a class="single-card__link" href="{% url 'card' cardUser.card.id %}">
+        <h4>{{ cardUser.card.title }}</h4>
+        <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ cardUser.card.slug }}.png" alt="{{ cardUser.card.title }}" class="single-card__link__img">
+        {% if cardUser.quantity > 1 %}<span class="quantity">x{{ cardUser.quantity }}</span>{% endif %}
+      </a>
+    </div>
+    {% empty %}
+    <div class="col">
+      Vous n'avez pas encore de cartes.
+    </div>
+    {% endfor %}
   </div>
 </div>
 

@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck
+from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck, Profile
 from django.contrib.auth.models import User
 from django.db.models import Count
 
@@ -139,13 +139,19 @@ def sellCard(request, card_id):
     user = request.user
     decksUser = Deck.objects.all().filter(owner=user)
     for deckUser in decksUser:
-        cardsDeck = deckUser.cards.all()
-        for cardDeck in cardsDeck:
-            if card == cardDeck:
+        for cardsdeck in CardsDeck.objects.all().filter(deck=deckUser):
+            if card == cardsdeck.card:
                 messages.warning(request, f'Vous ne pouvez pas vendre une carte faisant partie de l\'un de vos Deck')
                 return redirect('myCards')
 
-    user.cards.remove(card)
+    cardUser = get_object_or_404(CardsUser, user=user, card=card)
+
+    if cardUser.quantity > 1:
+        cardUser.quantity -= 1
+        cardUser.save()
+    else:
+        cardUser.delete()
+
     user.profile.credit += 10
     user.save()
     messages.success(request, f'La carte a bien été vendu, elle vous a rapporté 10 poussières')
@@ -232,17 +238,15 @@ def updateDeck(request, deck_id):
 
 
 def playerAll(request):
-    players = User.objects.all()
+    players = User.objects.exclude(id=request.user.pk)
 
     return render(request, 'hearthstone/player-all.html', {'players': players})
 
 
 def player(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
+    profile = get_object_or_404(Profile, pk=user_id)
 
-    decks = user.decks.all()
-
-    return render(request, 'hearthstone/player.html', {'player': user, 'decks': decks})
+    return render(request, 'hearthstone/player.html', {'profile': profile})
 
 
 def forum(request):

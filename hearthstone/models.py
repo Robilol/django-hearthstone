@@ -9,6 +9,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credit = models.IntegerField(default=200)
     isFirstConnection = models.BooleanField(default=True)
+    elo = models.IntegerField(default=1000)
 
 
 @receiver(post_save, sender=User)
