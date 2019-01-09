@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck
+from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck, Follow
 from django.contrib.auth.models import User
 from django.db.models import Count
 
@@ -133,6 +133,25 @@ def buyCards(request):
 
     return render(request, 'hearthstone/buy-cards.html', {'cards': cards})
 
+def follow(request, user_id):
+
+    followed = get_object_or_404(User, pk=user_id)
+    Follow.objects.get_or_create(user=request.user, followed=followed)
+    messages.success(request, f'Vous commencez à suivre ce joueur')
+
+    return redirect('player', followed.pk)
+
+def unfollow(request, user_id):
+
+    followed = get_object_or_404(User, pk=user_id)
+    following = get_object_or_404(Follow, user=request.user.id, followed=followed.id)
+    following.delete()
+    messages.success(request, f'Vous ne suivez plus ce joueur')
+
+    return redirect('player', followed.pk)
+
+
+
 
 def sellCard(request, card_id):
     card = get_object_or_404(Card, pk=card_id)
@@ -240,9 +259,14 @@ def playerAll(request):
 def player(request, user_id):
     user = get_object_or_404(User, pk=user_id)
 
-    decks = user.decks.all()
-
-    return render(request, 'hearthstone/player.html', {'player': user, 'decks': decks})
+   # decks = user.decks.all()
+    decks = Deck.objects.all().filter(owner=user)
+    followeds = Follow.objects.all().filter(user=request.user)
+    show_follow_button = 1
+    for followed in followeds:
+        if followed.followed_id == user_id:
+            show_follow_button = 0
+    return render(request, 'hearthstone/player.html', {'player': user, 'player_connected': request.user, 'show_follow_button': show_follow_button,'decks': decks})
 
 
 def forum(request):

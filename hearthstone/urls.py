@@ -26,6 +26,9 @@ urlpatterns = [
     path('player/all', views.playerAll, name='playerAll'),
     path('player/<int:user_id>', views.player, name='player'),
 
+    path('follow/<int:user_id>', views.follow, name='follow'),
+    path('unfollow/<int:user_id>', views.unfollow, name='unfollow'),
+
     path('forum', views.forum, name='forum'),
     path('create-topic', views.createTopic, name='createTopic'),
     path('topic/<int:topic_id>', views.topic, name='topic'),

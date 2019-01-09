@@ -4,6 +4,13 @@
 <div class="row my-5">
   <div class="col">
   <h1 class="text-center">Joueur : {{ player.username }}</h1>
+    {% if player != player_connected %}
+      {% if show_follow_button == 1 %}
+        <h3><a class="btn btn-outline-primary btn-sm" href="{% url 'follow' player.pk %}">Suivre ce joueur</a></h3>
+      {% else %}
+        <h3><a class="btn btn-outline-primary btn-sm" href="{% url 'unfollow' player.pk %}">Ne plus suivre ce joueur</a></h3>
+      {% endif %}
+    {% endif %}
   </div>
   <div class="col-md-12">
     <h1>Liste des decks</h1>
