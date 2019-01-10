@@ -28,6 +28,7 @@ urlpatterns = [
 
     path('follow/<int:user_id>', views.follow, name='follow'),
     path('unfollow/<int:user_id>', views.unfollow, name='unfollow'),
+    path('actu', views.actu, name='actu'),
 
     path('forum', views.forum, name='forum'),
     path('create-topic', views.createTopic, name='createTopic'),

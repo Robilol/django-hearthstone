@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 class Profile(models.Model):
@@ -87,6 +88,10 @@ class Topic(models.Model):
     def __str__(self):
         return self.title
 
+@receiver(post_save, sender=Topic)
+def actu_from_topic(sender, instance, **kwargs):
+    user = get_object_or_404(User, pk=instance.author_id)
+    Actu.objects.create(user=user, content='Votre ami '+user.username+' a créer un topic sur le forum: '+instance.title)
 
 class Message(models.Model):
     content = models.CharField(max_length=1000)
@@ -96,14 +101,32 @@ class Message(models.Model):
     def __str__(self):
         return self.content
 
+@receiver(post_save, sender=Message)
+def actu_from_message(sender, instance, **kwargs):
+    user = get_object_or_404(User, pk=instance.author_id)
+    topic = get_object_or_404(Topic, pk=instance.topic_id)
+    Actu.objects.create(user=user, content='Votre ami '+user.username+' a répondu au topic: '+topic.title)
+
 
 class Follow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follow_user')
     followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed')
+    created_at = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return self.content
 
+@receiver(post_delete, sender=Follow)
+def actu_from_following(sender, instance, **kwargs):
+    user = get_object_or_404(User, pk=instance.user_id)
+    followed = get_object_or_404(User, pk=instance.followed_id)
+    Actu.objects.create(user=user, content='Votre ami '+user.username+' a commencé à suivre: '+followed.username)
+
+@receiver(post_delete, sender=Follow)
+def actu_from_unfollowing(sender, instance, **kwargs):
+    user = get_object_or_404(User, pk=instance.user_id)
+    followed = get_object_or_404(User, pk=instance.followed_id)
+    Actu.objects.create(user=user, content='Votre ami '+user.username+' a arrêté de suivre: '+followed.username)
 
 class Actu(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actu_user')
