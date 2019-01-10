@@ -13,9 +13,9 @@
       {% for cardsdeck in deck.cardsdeck_set.all %}
       <div class="col-2 text-center single-card my-4">
         <a class="single-card__link" href="{% url 'card' cardsdeck.card.id %}">
-          <h4>{{ cardsdeck.card.title }}</h4>
-          <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ cardsdeck.card.slug }}.png" alt="{{ cardsdeck.card.title }}" class="single-card__link__img">
-          {% if card.quantity > 1 %}<span class="quantity">x{{ card.quantity }}</span>{% endif %}
+          <h4 class="title">{{ cardsdeck.card.title }}</h4>
+          <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ cardsdeck.card.slug }}.png" alt="{{ cardsdeck.card.title }}" class="single-card__link__img">
+          {% if cardsdeck.quantity > 1 %}<span class="quantity">x{{ cardsdeck.quantity }}</span>{% endif %}
         </a>
       </div>
       {% empty %}

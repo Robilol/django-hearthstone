@@ -220,38 +220,40 @@ def deleteDeck(request, deck_id):
 def updateDeck(request, deck_id):
     if request.POST:
         deck = get_object_or_404(Deck, pk=deck_id)
-        cards = request.POST.items()
+        cards = request.POST.getlist('cards')
 
-        cardsDeck = deck.cards.all()
+        cardsDeck = deck.cardsdeck_set.all()
 
         for cardDeck in cardsDeck:
-            deck.cards.remove(cardDeck)
+            cardDeck.delete()
 
-        for key, value in cards:
-            if key[:4] == 'card':
-                cardId = key.split('_')[1]
+        for card_id in cards:
+            card = get_object_or_404(Card, pk=card_id)
 
-                card = get_object_or_404(Card, pk=cardId)
-
-                deck.cards.add(card)
+            cardDeck, created = CardsDeck.objects.get_or_create(deck=deck, card=card,
+                                                                defaults={'quantity': 1})
+            if created:
+                cardDeck.save()
+            else:
+                cardDeck.quantity += 1
+                cardDeck.save()
 
         return redirect('deck', deck.pk)
     else:
         deck = get_object_or_404(Deck, pk=deck_id)
-
-        user = request.user
 
         cardsUsed = deck.cardsdeck_set.all()
 
         cardsUsedId = []
 
         for card in cardsUsed:
-            cardsUsedId.append(card.pk)
+            for i in range(card.quantity):
+                cardsUsedId.append(card.card.id)
 
-        cardsUser = user.cards.all()
+        cardsUsedId = cardsUsedId[::-1]
 
         return render(request, 'hearthstone/update-deck.html',
-                      {'deck': deck, 'cardsUsed': cardsUsedId})
+                      {'deck': deck, 'cardsUsedId': cardsUsedId})
 
 
 def playerAll(request):
@@ -269,7 +271,8 @@ def player(request, user_id):
         if followed.followed_id == user_id:
             show_follow_button = 0
 
-    return render(request, 'hearthstone/player.html', {'profile': profile, 'player_connected': request.user, 'show_follow_button': show_follow_button})
+    return render(request, 'hearthstone/player.html',
+                  {'profile': profile, 'player_connected': request.user, 'show_follow_button': show_follow_button})
 
 
 def forum(request):

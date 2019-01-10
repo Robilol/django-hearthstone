@@ -15,14 +15,27 @@
 
         {% for i in "x"|rjust:cardUser.quantity %}
         <div class="col-2 text-center single-card my-4">
-          <h4>{{ cardUser.card.title }}</h4>
+          <h4 class="title">{{ cardUser.card.title }}</h4>
+
+          {% if cardUser.card.id in cardsUsedId %}
           <img
-            src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1540542198/django/{{ cardUser.card.slug }}.png"
+            src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ cardUser.card.slug }}.png"
             alt="{{ cardUser.card.title }}"
-            class="single-card__link__img card {% if card.pk in cardsUsed %}selected{% endif %}">
-          {% if cardUser.quantity > 1 %}<span class="quantity">x{{ cardUser.quantity }}</span>{% endif %}
-          <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none" {% if
-                 cardUser.card.id in cardsUsed %}checked{% endif %}>
+            class="single-card__link__img card selected">
+          <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none" checked>
+
+          <div style="display: none">{{ cardsUsedId.pop }}</div>
+
+          {% else %}
+
+          <img
+            src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ cardUser.card.slug }}.png"
+            alt="{{ cardUser.card.title }}"
+            class="single-card__link__img card">
+          <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none">
+
+          {% endif %}
+
         </div>
         {% endfor %}
         {% empty %}
