@@ -332,5 +332,5 @@ def actu(request):
         actus.append(actu_of_friend)
 
     #import pdb; pdb.set_trace()
-    return render(request, 'hearthstone/actu.html', {'actus': actu_of_friend, 'followeds': followeds})
+    return render(request, 'hearthstone/actu.html', {'actus': actus, 'followeds': followeds})
 
