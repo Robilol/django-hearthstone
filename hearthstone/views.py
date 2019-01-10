@@ -8,10 +8,10 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck, Profile, Follow
+from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck, Profile, Follow, Actu
 from django.contrib.auth.models import User
 from django.db.models import Count
-
+from django.db.models import Q
 
 def home(request):
     title = 'Accueil'
@@ -326,3 +326,14 @@ def topic(request, topic_id):
     }
 
     return render(request, 'forum/topic.html', context)
+
+def actu(request):
+    followeds = Follow.objects.filter(user_id=request.user.id)
+    actus = []
+    for followed in followeds:
+        actu_of_friend = Actu.objects.all().filter(user_id=followed.followed_id).filter(Q(created_at__gte=followed.created_at)|Q(created_at=None))
+        actus.append(actu_of_friend)
+
+    #import pdb; pdb.set_trace()
+    return render(request, 'hearthstone/actu.html', {'actus': actus, 'followeds': followeds})
+

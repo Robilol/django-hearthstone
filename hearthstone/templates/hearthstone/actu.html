@@ -1,0 +1,18 @@
+{% extends "hearthstone/base.html" %}
+
+{% block content %}
+<div class="row my-5">
+  {% for actu in actus %}
+    {% for real_actu in actu %}
+      <div class="col-md-12">
+        <div class="row">
+          <p>{{ real_actu.content }} le : {{ real_actu.created_at }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  {% endfor %}
+</div>
+
+{% endblock content %}
+
+
