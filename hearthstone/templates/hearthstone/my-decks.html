@@ -10,7 +10,10 @@
     <div class="row">
       {% for deck in decks %}
       <div class="col-3 text-center my-4">
-        <a href="{% url 'deck' deck.id %}">{{deck.title}}</a>
+        <a class="single-deck" href="{% url 'deck' deck.id %}">
+          <h4 class="title">{{deck.title}}</h4>
+          <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1547202285/django/card-pack.png" alt="">
+        </a>
       </div>
       {% empty %}
       <div class="col">

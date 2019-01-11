@@ -257,9 +257,16 @@ def updateDeck(request, deck_id):
 
 
 def playerAll(request):
-    players = User.objects.exclude(id=request.user.pk)
+    players = Profile.objects.exclude(user=request.user.pk)
 
-    return render(request, 'hearthstone/player-all.html', {'players': players})
+    follows = Follow.objects.filter(user=request.user.pk)
+
+    followsId = []
+
+    for follow in follows:
+        followsId.append(follow.pk)
+
+    return render(request, 'hearthstone/player-all.html', {'players': players, 'followsId': followsId})
 
 
 def player(request, user_id):

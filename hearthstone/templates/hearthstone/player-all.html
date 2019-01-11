@@ -1,11 +1,33 @@
 {% extends "hearthstone/base.html" %}
 
 {% block content %}
-<ul>
-  {% for player in players %}
-  <li><a href="{{ player.pk }}">{{ player.username }}</a></li>
-  {% endfor %}
-</ul>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Joueur</th>
+      <th>Elo</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for player in players %}
+      <tr>
+        <td>{{ player.pk }}</td>
+        <td>{{ player.user.username }}</td>
+        <td>{{ player.elo }}</td>
+        <td>
+          <a class="btn btn-outline-primary btn-sm" href="{% url 'player' player.pk %}">Details</a>
+          {% if player.pk in followsId %}
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'unfollow' player.pk %}">Ne plus suivre ce joueur</a>
+          {% else %}
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'follow' player.pk %}">Suivre ce joueur</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 
 {% endblock content %}
 

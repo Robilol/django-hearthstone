@@ -2,8 +2,38 @@ html, body {
     height: 100%;
     margin: 0;
 }
+
+.navbar {
+    height: 73px;
+    background-image: url(https://res.cloudinary.com/dglr48luk/image/upload/v1547202231/django/bg.png);
+    color: #fcd144;
+}
+
+.navbar-brand {
+    width: 20%;
+}
+
+.navbar-brand img {
+    width: 100%;
+}
+
+.nav-link {
+    color: #fcd144;
+}
+
+.nav-item .dropdown {
+    position: absolute;
+    display: none;
+    background-color: #5A4336;
+}
+
+.nav-item .dropdown ul {
+    list-style: none;
+}
+
 .content {
     min-height: 100%;
+    margin-top: 80px;
 }
 .content-inside {
     padding: 50px 0;
@@ -65,10 +95,28 @@ footer {
 .single-card .quantity {
     position: absolute;
     top: 0;
+    background-color: #AD9788;
     right: 0;
+    border-radius: 5px;
+    border: solid black 1px;
     font-size: 20px;
+    color: black;
+    width: 35px;
 }
 
 .single-card .title {
     height: 60px;
+}
+
+.single-deck .title {
+    position: absolute;
+    z-index: 1;
+    color: #fefefe;
+    background: rgba(0,0,0,0.6);
+    border-radius: 5px;
+    bottom: -9px;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 100;
 }
