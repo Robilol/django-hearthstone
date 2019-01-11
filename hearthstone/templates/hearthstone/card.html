@@ -2,13 +2,24 @@
 
 {% block content %}
 
-<div class="row my-5">
-  <div class="col-md-12">
-    <h1>{{ card.title }}</h1>
-    <p class="single-card__detail"><img src="https://res.cloudinary.com/dglr48luk/image/upload/d_unknown.png/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__detail__img"></p>
-    <button><a href="../sell-card/{{ card.pk }}">Vendre</a></button>
+  <div class="row">
+    <div class="col">
+      <h1>{{ card.title }}</h1>
+    </div>
   </div>
-</div>
+  <div class="row my-5">
+    <div class="col-md-6">
+      <p class="single-card__detail"><img
+        src="https://res.cloudinary.com/dglr48luk/image/upload/d_unknown.png/v1540542198/django/{{ card.slug }}.png"
+        alt="{{ card.title }}" class="single-card__detail__img"></p>
+      <a class="btn" href="../sell-card/{{ card.pk }}">Vendre</a>
+    </div>
+    <div class="col-md-6">
+      <p><strong>Mana :</strong> {{ card.cost }}</p>
+      <p><strong>Vie :</strong> {{ card.health }}</p>
+      <p><strong>Degat :</strong> {{ card.damage }}</p>
+    </div>
+  </div>
 
 {% endblock content %}
 

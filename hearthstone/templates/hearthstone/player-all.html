@@ -17,11 +17,11 @@
         <td>{{ player.user.username }}</td>
         <td>{{ player.elo }}</td>
         <td>
-          <a class="btn btn-outline-primary btn-sm" href="{% url 'player' player.pk %}">Details</a>
+          <a class="btn btn-sm" href="{% url 'player' player.pk %}">Details</a>
           {% if player.pk in followsId %}
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'unfollow' player.pk %}">Ne plus suivre ce joueur</a>
+            <a class="btn btn-sm" href="{% url 'unfollow' player.pk %}">Ne plus suivre ce joueur</a>
           {% else %}
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'follow' player.pk %}">Suivre ce joueur</a>
+            <a class="btn btn-sm" href="{% url 'follow' player.pk %}">Suivre ce joueur</a>
           {% endif %}
         </td>
       </tr>

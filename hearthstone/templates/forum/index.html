@@ -1,37 +1,32 @@
 {% extends "hearthstone/base.html" %}
 
 {% block content %}
-<div class="row my-5">
-  <div class="col-md-12">
-    <h1>Forum</h1>
+  <div class="row my-5">
+    <div class="col-md-12">
+      <h1>Forum</h1>
 
-    {% if request.user.is_authenticated %}
-    <div class="forum__links my-4">
-      <a href="{% url 'createTopic' %}" class="btn btn-primary forum__links__single">Créer un sujet</a>
-    </div>
-    {% else %}
-    <p><a href="{% url 'app_login' %}">Connectez-vous</a> pour créer un sujet.</p>
-    {% endif %}
-
-    <div class="topics list-group mb-5">
-      {% for topic in topics %}
-      <div class="topics__single list-group-item">
-        <div>
-          <h3>{{topic.title}} <span>Créé le {{topic.created_at}}</span></h3>
-          <small>Par {{topic.author.username}}</small>
+      {% if request.user.is_authenticated %}
+        <div class="forum__links my-4">
+          <a href="{% url 'createTopic' %}" class="btn forum__links__single">Créer un sujet</a>
         </div>
+      {% else %}
+        <p><a href="{% url 'app_login' %}">Connectez-vous</a> pour créer un sujet.</p>
+      {% endif %}
 
-        <div>
-          <p><a href="{% url 'topic' topic.id %}">Voir le sujet</a></p>
-          <p>{{topic.number_of_messages}} messages</p>
-        </div>
+      <div class="topics list-group mb-5">
+        {% for topic in topics %}
+          <a class="topics__single list-group-item" href="{% url 'topic' topic.id %}">
+            <div>
+              <h3>{{ topic.title }} <span>Créé le {{ topic.created_at }}</span></h3>
+              <small>Par {{ topic.author.username }}</small>
+            </div>
+          </a>
+        {% empty %}
+          <p>Aucun sujet pour le moment.</p>
+        {% endfor %}
       </div>
-      {% empty %}
-      <p>Aucun sujet pour le moment.</p>
-      {% endfor %}
     </div>
   </div>
-</div>
 
 {% endblock content %}
 

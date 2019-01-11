@@ -62,7 +62,7 @@
 
         {% if not request.user.is_authenticated %}
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="account" data-toggle="dropdown"
+            <button class="btn dropdown-toggle" type="button" id="account" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
               Mon compte
             </button>
@@ -77,7 +77,7 @@
           </li>
           <span class="flex-centered text-light">|</span>
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="account" data-toggle="dropdown"
+            <button class="btn dropdown-toggle" type="button" id="account" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
               {{ request.user.username }}
             </button>

@@ -3,10 +3,28 @@ html, body {
     margin: 0;
 }
 
+body {
+    background-image: url(https://res.cloudinary.com/dglr48luk/image/upload/v1547204969/django/bg.jpg);
+}
+
+a {
+    color: unset;
+}
+
 .navbar {
     height: 73px;
-    background-image: url(https://res.cloudinary.com/dglr48luk/image/upload/v1547202231/django/bg.png);
+    background-image: url(https://res.cloudinary.com/dglr48luk/image/upload/v1547202231/django/bg-menu.png);
     color: #fcd144;
+}
+
+.btn {
+    background-color: #b921c4;
+    border-color: #4c0d7a;
+    color: white;
+}
+
+.btn:hover {
+    color: black;
 }
 
 .navbar-brand {
@@ -47,6 +65,11 @@ footer {
 .flex-centered {
     display: flex;
     align-items: center;
+}
+
+.card {
+    background-color: unset;
+    border: none;
 }
 
 .card.selected {
@@ -119,4 +142,13 @@ footer {
     padding: 10px 0;
     font-size: 16px;
     font-weight: 100;
+}
+
+
+.card-actu {
+    width: 100%;
+}
+
+.card-actu small {
+    float: right;
 }
