@@ -2,15 +2,18 @@
 
 {% block content %}
 <div class="row my-5">
-  {% for actu in actus %}
-    {% for real_actu in actu %}
-      <div class="col-md-12">
-        <div class="row">
-          <p>{{ real_actu.content }} le : {{ real_actu.created_at }}</p>
+  <div class="col-md-12">
+    {% for actu in actus %}
+      {% for real_actu in actu %}
+      <div class="row">
+        <div class="list-group-item card-actu">
+          <p>{{ real_actu.content }}</p>
+          <small>{{ real_actu.created_at }}</small>
         </div>
       </div>
+      {% endfor %}
     {% endfor %}
-  {% endfor %}
+  </div>
 </div>
 
 {% endblock content %}

@@ -6,9 +6,9 @@
   <h1 class="text-center">Joueur : {{ profile.user.username }}</h1>
     {% if profile.user != request.user %}
       {% if show_follow_button == 1 %}
-        <h3><a class="btn btn-outline-primary btn-sm" href="{% url 'follow' profile.user.pk %}">Suivre ce joueur</a></h3>
+        <h3><a class="btn btn-sm" href="{% url 'follow' profile.user.pk %}">Suivre ce joueur</a></h3>
       {% else %}
-        <h3><a class="btn btn-outline-primary btn-sm" href="{% url 'unfollow' profile.user.pk %}">Ne plus suivre ce joueur</a></h3>
+        <h3><a class="btn btn-sm" href="{% url 'unfollow' profile.user.pk %}">Ne plus suivre ce joueur</a></h3>
       {% endif %}
     {% endif %}
   </div>

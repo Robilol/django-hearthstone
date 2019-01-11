@@ -7,7 +7,7 @@
     <h1>Sujet: {{topic.title|default:""}}</h1>
 
     <div class="forum__links my-4">
-      <a href="{% url 'forum' %}" class="btn btn-primary forum__links__single">Retour au forum</a>
+      <a href="{% url 'forum' %}" class="btn forum__links__single">Retour au forum</a>
     </div>
 
     <div class="topic list-group">
@@ -30,7 +30,7 @@
     <form class="mb-5" method="post">
       {% csrf_token %}
       {{ form|crispy }}
-      <button type="submit" class="btn btn-outline-primary">Enregistrer</button>
+      <button type="submit" class="btn">Enregistrer</button>
     </form>
     {% else %}
     <p><a href="{% url 'app_login' %}">Connectez-vous</a> pour répondre au sujet.</p>

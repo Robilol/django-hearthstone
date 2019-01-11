@@ -3,9 +3,9 @@
 {% block content %}
 
 <!-- Jumbotron Header -->
-<header class="jumbotron my-4">
+<header class="my-4">
   <h1 class="display-3">Django Hearthstone</h1>
-  <a href="{% url 'game' %}" class="btn btn-primary btn-lg">Jouer</a>
+  <a href="{% url 'game' %}" class="btn btn-lg">Jouer</a>
 </header>
 
 <div class="row my-5">
@@ -17,7 +17,7 @@
       <p>Il vous reste : {{ request.user.profile.credit }} poussieres.</p>
 
       {% if request.user.profile.credit >= 100 %}
-      <p><a href="{% url 'buyCards' %}" class="btn btn-outline-primary btn-sm">Acheter un paquet</a> <span class="small">Coût : 100 poussieres</span></p>
+      <p><a href="{% url 'buyCards' %}" class="btn btn-sm">Acheter un paquet</a> <span class="small">Coût : 100 poussieres</span></p>
       {% endif %}
 
     </div>
