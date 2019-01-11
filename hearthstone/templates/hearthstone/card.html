@@ -6,7 +6,11 @@
   <div class="col-md-12">
     <h1>{{ card.title }}</h1>
     <p class="single-card__detail"><img src="https://res.cloudinary.com/dglr48luk/image/upload/d_unknown.png/v1540542198/django/{{ card.slug }}.png" alt="{{ card.title }}" class="single-card__detail__img"></p>
-    <button><a href="../sell-card/{{ card.pk }}">Vendre</a></button>
+    {% if showSend == 1 %}
+      <button><a href="../sell-card/{{ card.pk }}">Vendre</a></button>
+    {% else %}
+      <button><a href="../echange/create/{{ cardUser.pk }}">Proposer un échange</a></button>
+    {% endif %}
   </div>
 </div>
 

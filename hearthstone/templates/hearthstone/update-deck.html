@@ -58,6 +58,10 @@
   $('.card').on('click', function () {
 
     if ($('.card.selected').length >= 30) {
+      if ($(this).hasClass('selected')) {
+        $(this).removeClass('selected');
+        return;
+      }
       alert("vous ne pouvez pas avoir plus de 30 cartes dans un deck");
       return;
     }
