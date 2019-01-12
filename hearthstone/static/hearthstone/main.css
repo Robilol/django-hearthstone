@@ -152,3 +152,16 @@ footer {
 .card-actu small {
     float: right;
 }
+
+.exchange-validate {
+    color: green;
+}
+
+.exchange-refuse {
+    color: red;
+}
+
+.exchange-vous {
+    font-size: 1.3em;
+    font-weight: bold;
+}
