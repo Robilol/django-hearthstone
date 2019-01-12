@@ -64,9 +64,9 @@
             {% if request.user == exchange.user2 and exchange.card1 == None %}
             <a class="btn btn-outline-primary btn-sm" href="{% url 'chooseCard' exchange.id %}">Choisir la carte</a>
             {% endif %}
-            {% if request.user == exchange.user1 and exchange.card1 != None and exchange.user1_status == None %}
+            {% if request.user == exchange.user1 and exchange.card1 != None and exchange.user1_status == None and exchange.exchange_status == None %}
               <a class="btn btn-outline-primary btn-sm" href="{% url 'exchangeValidate' exchange.id %}">Valider</a>
-            {% elif request.user == exchange.user2 and exchange.card1 != None and exchange.user2_status == None %}
+            {% elif request.user == exchange.user2 and exchange.card1 != None and exchange.user2_status == None and exchange.exchange_status == None%}
               <a class="btn btn-outline-primary btn-sm" href="{% url 'exchangeValidate' exchange.id %}">Valider</a>
             {% endif %}
             {% if request.user == exchange.user1 and exchange.user1_status == None and exchange.exchange_status == None %}

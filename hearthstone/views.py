@@ -435,7 +435,7 @@ def exchangeValidate(request, exchange_id):
         else:
             newCard2.quantity += 1
             newCard2.save()
-
+        messages.success(request, f'L\'échange s\'est finalisé! '+exchange.card1.title+' et '+exchange.card2.title+' ont désormais changé de propriétaire.')
     exchange.save()
     return redirect('echange')
 
@@ -446,5 +446,6 @@ def exchangeRefuse(request, exchange_id):
     elif request.user.id == exchange.user2_id:
         exchange.user2_status = 0
     exchange.exchange_status = 0
+    messages.success(request, f'L\'échange a été annulé !')
     exchange.save()
     return redirect('echange')
