@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck, Profile, Follow, Actu
+from .models import Card, Deck, Game, Topic, Message, CardsUser, CardsDeck, Profile, Follow, Actu, ExchangeCard
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models import Q
@@ -238,9 +238,14 @@ def game(request):
                       {'playablePlayers': playablePlayers, 'playableDecks': playableDecks})
 
 
-def card(request, card_id):
-    card = get_object_or_404(Card, pk=card_id)
-    return render(request, 'hearthstone/card.html', {'card': card})
+def card(request, cardUser_id):
+    cardUser = get_object_or_404(CardsUser, pk=cardUser_id)
+    card = get_object_or_404(Card, pk=cardUser.card_id)
+    user = get_object_or_404(User, pk=cardUser.user_id)
+    showSend = 1
+    if user != request.user:
+        showSend = 0
+    return render(request, 'hearthstone/card.html', {'card': card, 'showSend': showSend, 'cardUser': cardUser})
 
 
 def buyCards(request):
@@ -487,3 +492,110 @@ def actu(request):
 
     # import pdb; pdb.set_trace()
     return render(request, 'hearthstone/actu.html', {'actus': actus, 'followeds': followeds})
+
+
+def echangeCreate(request, cardUser_id):
+    cardUser = get_object_or_404(CardsUser, pk=cardUser_id)
+    card = get_object_or_404(Card, pk=cardUser.card_id)
+    user = get_object_or_404(User, pk=cardUser.user_id)
+    ExchangeCard.objects.create(user1=request.user, user2=user, card2=card)
+    return redirect('echange')
+
+
+def echange(request):
+    exchangesByMe = ExchangeCard.objects.filter(user1=request.user.id)
+    exchangesByOthers = ExchangeCard.objects.filter(user2=request.user.id)
+    exchanges = []
+    exchanges.append(exchangesByMe)
+    exchanges.append(exchangesByOthers)
+    return render(request, 'hearthstone/echange.html', {'exchanges': exchanges})
+
+
+def chooseCard(request, exchange_id):
+    exchange = get_object_or_404(ExchangeCard, pk=exchange_id)
+    if request.POST:
+        cards = request.POST.getlist('cards')
+        for card_id in cards:
+            card = get_object_or_404(Card, pk=card_id)
+        exchange.card1 = card
+        exchange.save()
+        return redirect('echange')
+    else:
+        user = get_object_or_404(User, pk=exchange.user1_id)
+        return render(request, 'hearthstone/chooseCard.html', {'exchange_id': exchange_id, 'userChoose': user})
+
+
+def exchangeValidate(request, exchange_id):
+    exchange = get_object_or_404(ExchangeCard, pk=exchange_id)
+    if request.user.id == exchange.user1_id:
+        exchange.user1_status = 1
+    elif request.user.id == exchange.user2_id:
+        exchange.user2_status = 1
+    if exchange.user1_status == 1 and exchange.user2_status == 1:
+        exchange.exchange_status = 1
+
+        cardsdeck1 = CardsDeck.objects.all().filter(card=exchange.card1)
+        for cardDeck1 in cardsdeck1:
+            deck1 = get_object_or_404(Deck, pk=cardDeck1.deck_id)
+            if deck1.owner == exchange.user1:
+                if cardDeck1.quantity > 1:
+                    cardDeck1.quantity -= 1
+                    cardDeck1.save()
+                else:
+                    cardDeck1.delete()
+
+        cardsdeck2 = CardsDeck.objects.all().filter(card=exchange.card2)
+        for cardDeck2 in cardsdeck2:
+            deck2 = get_object_or_404(Deck, pk=cardDeck2.deck_id)
+            if deck2.owner == exchange.user2:
+                if cardDeck2.quantity > 1:
+                    cardDeck2.quantity -= 1
+                    cardDeck2.save()
+                else:
+                    cardDeck2.delete()
+
+        cardUser1 = get_object_or_404(CardsUser, card=exchange.card1, user=exchange.user1)
+        if cardUser1.quantity > 1:
+            cardUser1.quantity -= 1
+            cardUser1.save()
+        else:
+            cardUser1.delete()
+
+        cardUser2 = get_object_or_404(CardsUser, card=exchange.card2, user=exchange.user2)
+        if cardUser2.quantity > 1:
+            cardUser2.quantity -= 1
+            cardUser2.save()
+        else:
+            cardUser2.delete()
+
+        newCard1, created = CardsUser.objects.get_or_create(user=exchange.user1, card=exchange.card2,
+                                                            defaults={'quantity': 1})
+        if created:
+            newCard1.save()
+        else:
+            newCard1.quantity += 1
+            newCard1.save()
+
+        newCard2, created = CardsUser.objects.get_or_create(user=exchange.user2, card=exchange.card1,
+                                                            defaults={'quantity': 1})
+        if created:
+            newCard2.save()
+        else:
+            newCard2.quantity += 1
+            newCard2.save()
+        messages.success(request,
+                         f'L\'échange s\'est finalisé! ' + exchange.card1.title + ' et ' + exchange.card2.title + ' ont désormais changé de propriétaire.')
+    exchange.save()
+    return redirect('echange')
+
+
+def exchangeRefuse(request, exchange_id):
+    exchange = get_object_or_404(ExchangeCard, pk=exchange_id)
+    if request.user.id == exchange.user1_id:
+        exchange.user1_status = 0
+    elif request.user.id == exchange.user2_id:
+        exchange.user2_status = 0
+    exchange.exchange_status = 0
+    messages.success(request, f'L\'échange a été annulé !')
+    exchange.save()
+    return redirect('echange')

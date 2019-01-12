@@ -198,3 +198,16 @@ footer {
 .game-actions img {
     width: 100%;
 }
+
+.exchange-validate {
+    color: green;
+}
+
+.exchange-refuse {
+    color: red;
+}
+
+.exchange-vous {
+    font-size: 1.3em;
+    font-weight: bold;
+}

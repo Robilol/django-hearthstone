@@ -140,3 +140,16 @@ class Game(models.Model):
     round = models.IntegerField(null=False, blank=True)
     result = models.IntegerField(null=False, blank=True)  # 1 player1 |  -1 player2
     date = models.DateTimeField(default=timezone.now)
+
+
+class ExchangeCard(models.Model):
+    card1 = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='exchange_card1', null=True)
+    card2 = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='exchange_card2')
+    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exchange_user1')
+    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exchange_user2')
+    user1_status = models.IntegerField(null=True)
+    user2_status = models.IntegerField(null=True)
+    exchange_status = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.content

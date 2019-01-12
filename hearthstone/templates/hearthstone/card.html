@@ -12,7 +12,12 @@
       <p class="single-card__detail"><img
         src="https://res.cloudinary.com/dglr48luk/image/upload/d_unknown.png/v1540542198/django/{{ card.slug }}.png"
         alt="{{ card.title }}" class="single-card__detail__img"></p>
-      <a class="btn" href="../sell-card/{{ card.pk }}">Vendre</a>
+      {% if showSend == 1 %}
+        <a class="btn" href="../sell-card/{{ card.pk }}">Vendre</a>
+      {% else %}
+        <a class="btn" href="../echange/create/{{ cardUser.pk }}">Proposer un échange</a>
+      {% endif %}
+
     </div>
     <div class="col-md-6">
       <p><strong>Mana :</strong> {{ card.cost }}</p>

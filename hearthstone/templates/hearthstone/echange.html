@@ -1,0 +1,97 @@
+{% extends "hearthstone/base.html" %}
+
+{% block content %}
+  <div class="row my-5">
+    <h3>Vos échanges</h3>
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Joueur ayant lancé l'échange (Joueur 1)</th>
+        <th>L'autre joueur (Joueur 2)</th>
+        <th>Carte Joueur1</th>
+        <th>Carte Joueur2</th>
+        <th>Validation Joueur1</th>
+        <th>Validation Joueur2</th>
+        <th>Validation de l'échange</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for not_yet_exchange in exchanges %}
+        {% for exchange in not_yet_exchange %}
+        <tr>
+          {% if exchange.user1 == request.user %}
+            <td><p class="exchange-vous">Vous</p></td>
+          {% else %}
+            <td>{{ exchange.user1.username }}</td>
+          {% endif %}
+
+          {% if exchange.user2 == request.user %}
+            <td><p class="exchange-vous">Vous</p></td>
+          {% else %}
+            <td>{{ exchange.user2.username }}</td>
+          {% endif %}
+
+          <td>
+            <span class="single-card__link">
+            <h4 class="title">{{ exchange.card1.title }}</h4>
+            <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ exchange.card1.slug }}.png" alt="{{ exchange.card1.title }}" class="single-card__link__img">
+            </span>
+          </td>
+          <td>
+            <span class="single-card__link">
+            <h4 class="title">{{ exchange.card2.title }}</h4>
+            <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ exchange.card2.slug }}.png" alt="{{ exchange.card2.title }}" class="single-card__link__img">
+            </span>
+          </td>
+
+          {% if exchange.user1_status == None %}
+            <td><p>En Attente</p></td>
+          {% elif exchange.user1_status == 0 %}
+            <td><p class="exchange-refuse">Refusé</p></td>
+          {% elif exchange.user1_status == 1 %}
+            <td><p class="exchange-validate">Validé</p></td>
+          {% endif %}
+
+          {% if exchange.user2_status == None %}
+            <td><p>En Attente</p></td>
+          {% elif exchange.user2_status == 0 %}
+            <td><p class="exchange-refuse">Refusé</p></td>
+          {% elif exchange.user2_status == 1 %}
+            <td><p class="exchange-validate">Validé</p></td>
+          {% endif %}
+
+          {% if exchange.exchange_status == None %}
+            <td><p>En Attente</p></td>
+          {% elif exchange.exchange_status == 0 %}
+            <td><p class="exchange-refuse">Refusé</p></td>
+          {% elif exchange.exchange_status == 1 %}
+            <td><p class="exchange-validate">Validé</p></td>
+          {% endif %}
+
+          <td>
+            {% if request.user == exchange.user2 and exchange.card1 == None %}
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'chooseCard' exchange.id %}">Choisir la carte</a>
+            {% endif %}
+            {% if request.user == exchange.user1 and exchange.card1 != None and exchange.user1_status == None and exchange.exchange_status == None %}
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'exchangeValidate' exchange.id %}">Valider</a>
+            {% elif request.user == exchange.user2 and exchange.card1 != None and exchange.user2_status == None and exchange.exchange_status == None%}
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'exchangeValidate' exchange.id %}">Valider</a>
+            {% endif %}
+            {% if request.user == exchange.user1 and exchange.user1_status == None and exchange.exchange_status == None %}
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'exchangeRefuse' exchange.id %}">Refuser</a>
+            {% elif request.user == exchange.user2 and exchange.user2_status == None and exchange.exchange_status == None %}
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'exchangeRefuse' exchange.id %}">Refuser</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock content %}
+
+

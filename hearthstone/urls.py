@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('game', views.game, name='game'),
 
-    path('card/<int:card_id>', views.card, name='card'),
+    path('card/<int:cardUser_id>', views.card, name='card'),
     path('sell-card/<int:card_id>', views.sellCard, name='sellCard'),
     path('buy-cards', views.buyCards, name='buyCards'),
     path('my-cards', views.myCards, name='myCards'),
@@ -29,6 +29,12 @@ urlpatterns = [
     path('follow/<int:user_id>', views.follow, name='follow'),
     path('unfollow/<int:user_id>', views.unfollow, name='unfollow'),
     path('actu', views.actu, name='actu'),
+
+    path('echange/create/<int:cardUser_id>', views.echangeCreate, name='echangeCreate'),
+    path('echange', views.echange, name='echange'),
+    path('echange/chooseCard/<int:exchange_id>', views.chooseCard, name='chooseCard'),
+    path('echange/exchangeValidate/<int:exchange_id>', views.exchangeValidate, name='exchangeValidate'),
+    path('echange/exchangeRefuse/<int:exchange_id>', views.exchangeRefuse, name='exchangeRefuse'),
 
     path('forum', views.forum, name='forum'),
     path('create-topic', views.createTopic, name='createTopic'),
