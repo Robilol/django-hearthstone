@@ -1,0 +1,39 @@
+{% extends "hearthstone/base.html" %}
+
+{% block content %}
+  <div class="row my-5">
+    <div class="col-md-12">
+      <h3 class="text-center">
+        {{ battle.player.username }} VS {{ battle.opponent.username }}
+      </h3>
+      <div class="game-actions">
+        {% for action in actions %}
+          {% for key, value in action.items %}
+            <div class="game-actions row">
+              {% if key == 0 %}
+                <div class="col-12">
+                  <p>{{ value }}</p>
+                </div>
+              {% else %}
+                <div class="col-2">
+                  <img
+                    src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ key }}.png">
+                </div>
+                <div class="col-10">
+                  <p style="margin: 100px 0px;">{{ value }}</p>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+      <h4 class="text-center">
+        {% if battle.result == 1 %}
+          Victoire en {{ battle.round }} tours
+        {% else %}
+          Defaite en {{ battle.round }} tours
+        {% endif %}
+      </h4>
+    </div>
+  </div>
+{% endblock content %}

@@ -69,16 +69,6 @@ def slugify(sender, instance, *args, **kwargs):
     instance.slug = instance.slug.rstrip('_')
 
 
-class Game(models.Model):
-    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_one')
-    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_two')
-    winner = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return self.winner.username
-
-
 class Topic(models.Model):
     title = models.CharField(max_length=150)
     content = models.CharField(max_length=2000)
@@ -142,3 +132,11 @@ class Actu(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class Game(models.Model):
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player')
+    opponent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='opponent')
+    round = models.IntegerField(null=False, blank=True)
+    result = models.IntegerField(null=False, blank=True)  # 1 player1 |  -1 player2
+    date = models.DateTimeField(default=timezone.now)

@@ -1,78 +1,77 @@
 {% extends "hearthstone/base.html" %}
 
 {% block content %}
-<div class="row my-5">
-  <div class="col-md-12">
-    <h1>Deck : {{ deck.title }}</h1>
+  <div class="row my-5">
+    <div class="col-md-12">
+      <h1>Deck : {{ deck.title }}</h1>
 
-    <h2>Choisissez vos cartes :</h2>
-    <p>Nombre de cartes <span id="card_number"></span>/30</p>
-    <form method="post">
-      {% csrf_token %}
-      <div class="row"><input type="submit" class="btn" value="Enregistrer"></div>
-      <div class="row">
-        {% for cardUser in user.cardsuser_set.all %}
+      <h2>Choisissez vos cartes :</h2>
+      <p>Nombre de cartes <span id="card_number"></span>/30</p>
+      <form method="post">
+        {% csrf_token %}
+        <div class="row"><input type="submit" class="btn" value="Enregistrer"></div>
+        <div class="row">
+          {% for cardUser in user.cardsuser_set.all %}
 
-        {% for i in "x"|rjust:cardUser.quantity %}
-        <div class="col-2 text-center single-card my-4">
-          <h4 class="title">{{ cardUser.card.title }}</h4>
+            {% for i in "x"|rjust:cardUser.quantity %}
+              <div class="col-2 text-center single-card my-4">
+                <h4 class="title">{{ cardUser.card.title }}</h4>
 
-          {% if cardUser.card.id in cardsUsedId %}
-          <img
-            src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ cardUser.card.slug }}.png"
-            alt="{{ cardUser.card.title }}"
-            class="single-card__link__img card selected">
-          <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none" checked>
+                {% if cardUser.card.id in cardsUsedId %}
+                  <img
+                    src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ cardUser.card.slug }}.png"
+                    alt="{{ cardUser.card.title }}"
+                    class="single-card__link__img card selected">
+                  <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none" checked>
 
-          <div style="display: none">{{ cardsUsedId.pop }}</div>
+                  <div style="display: none">{{ cardsUsedId.pop }}</div>
 
-          {% else %}
+                {% else %}
 
-          <img
-            src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ cardUser.card.slug }}.png"
-            alt="{{ cardUser.card.title }}"
-            class="single-card__link__img card">
-          <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none">
+                  <img
+                    src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ cardUser.card.slug }}.png"
+                    alt="{{ cardUser.card.title }}"
+                    class="single-card__link__img card">
+                  <input type="checkbox" name="cards" value="{{ cardUser.card.id }}" style="display: none">
 
-          {% endif %}
+                {% endif %}
 
+              </div>
+            {% endfor %}
+          {% empty %}
+            <div class="col">
+              Vous n'avez pas encore de cartes.
+            </div>
+          {% endfor %}
         </div>
-        {% endfor %}
-        {% empty %}
-        <div class="col">
-          Vous n'avez pas encore de cartes.
-        </div>
-        {% endfor %}
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-  </form>
-</div>
 
-<script type="text/javascript">
+  <script type="text/javascript">
 
-
-  $('#card_number').text($('.card.selected').length);
-
-
-  $('.card').on('click', function () {
-
-    if ($('.card.selected').length >= 30) {
-      alert("vous ne pouvez pas avoir plus de 30 cartes dans un deck");
-      return;
-    }
-
-    if ($(this).hasClass('selected')) {
-      $(this).removeClass('selected');
-      $(this).next('input').prop('checked', false);
-    } else {
-      $(this).addClass('selected');
-      $(this).next('input').prop('checked', true);
-    }
 
     $('#card_number').text($('.card.selected').length);
-  })
-</script>
+
+
+    $('.card').on('click', function () {
+
+      if ($('.card.selected').length >= 30) {
+        alert("vous ne pouvez pas avoir plus de 30 cartes dans un deck");
+        return;
+      }
+
+      if ($(this).hasClass('selected')) {
+        $(this).removeClass('selected');
+        $(this).next('input').prop('checked', false);
+      } else {
+        $(this).addClass('selected');
+        $(this).next('input').prop('checked', true);
+      }
+
+      $('#card_number').text($('.card.selected').length);
+    })
+  </script>
 
 {% endblock content %}
 

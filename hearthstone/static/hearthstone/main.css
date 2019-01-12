@@ -11,6 +11,14 @@ a {
     color: unset;
 }
 
+footer {
+    margin-top: 0 !important;
+}
+
+.center {
+    text-align: center;
+}
+
 .navbar {
     height: 73px;
     background-image: url(https://res.cloudinary.com/dglr48luk/image/upload/v1547202231/django/bg-menu.png);
@@ -21,6 +29,10 @@ a {
     background-color: #b921c4;
     border-color: #4c0d7a;
     color: white;
+}
+
+.btn.fight {
+    font-size: 30px;
 }
 
 .btn:hover {
@@ -54,7 +66,7 @@ a {
     margin-top: 80px;
 }
 .content-inside {
-    padding: 50px 0;
+    padding-top: 50px;
 }
 footer {
     height: 100px;
@@ -131,6 +143,11 @@ footer {
     height: 60px;
 }
 
+.single-deck {
+    position: relative;
+    width: 100%;
+}
+
 .single-deck .title {
     position: absolute;
     z-index: 1;
@@ -144,6 +161,10 @@ footer {
     font-weight: 100;
 }
 
+.single-deck img {
+    width: 100%;
+}
+
 
 .card-actu {
     width: 100%;
@@ -151,4 +172,29 @@ footer {
 
 .card-actu small {
     float: right;
+}
+
+
+.single-player {
+    position: relative;
+    width: 100%;
+}
+
+.single-player .title {
+    position: absolute;
+    z-index: 1;
+    color: #fefefe;
+    bottom: 28px;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 26px;
+    font-weight: 100;
+}
+
+.single-player img {
+    width: 100%;
+}
+
+.game-actions img {
+    width: 100%;
 }

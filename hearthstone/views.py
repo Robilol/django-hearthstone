@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models import Q
 
+
 def home(request):
     title = 'Accueil'
     slugs = [
@@ -22,8 +23,7 @@ def home(request):
     ]
     context = {
         'title': title,
-        'games': Game.objects.all(),
-        'cards': Card.objects.all(),
+        'games': Game.objects.all()[10::-1],
         'slugs': slugs,
     }
 
@@ -93,7 +93,149 @@ def changePassword(request):
 
 
 def game(request):
-    return render(request, 'hearthstone/game.html')
+    if request.POST:
+        playerId = request.POST.get("player")
+        deckId = request.POST.get('deck')
+        playerAdeck = get_object_or_404(Deck, pk=deckId)
+        playerBdeck = None
+        results = 0
+
+        player = get_object_or_404(User, pk=playerId)
+
+        decks = Deck.objects.all().filter(owner=player)
+
+        for deck in decks:
+            count = 0
+
+            cardsDeck = deck.cardsdeck_set.all()
+
+            for cardDeck in cardsDeck:
+                count += cardDeck.quantity
+
+            if count == 30:
+                playerBdeck = deck
+
+        firstPlayer = randint(0, 1)
+
+        turn = 0
+        actions = []
+
+        playerAhp = 30
+        playerBhp = 30
+
+        playerAmana = 1
+        playerBmana = 1
+
+        playerAcards = playerAdeck.cardsdeck_set.all()
+        playerBcards = playerBdeck.cardsdeck_set.all()
+
+        while results == 0:
+            turn += 1
+            availableCards = []
+            playerAcard = None
+            playerBcard = None
+
+            # joueur A
+            availableCards = [x for x in playerAcards if x.card.cost <= playerAmana]
+            availableCards.sort(key=lambda x: x.card.cost, reverse=True)
+
+            if availableCards:
+                playerAcard = availableCards[randint(0, len(availableCards) - 1)].card
+
+                actions.append(
+                    {playerAcard.slug: request.user.username + " a joué la carte " + playerAcard.title})
+            else:
+                actions.append({0: request.user.username + " n'a pas assez de mana pour jouer une carte "})
+
+            # joueur B
+            availableCards = [x for x in playerBcards if x.card.cost <= playerBmana]
+            availableCards.sort(key=lambda x: x.card.cost, reverse=True)
+
+            if availableCards:
+                playerBcard = availableCards[randint(0, len(availableCards) - 1)].card
+
+                actions.append({playerBcard.slug: player.username + " a joué la carte " + playerBcard.title})
+            else:
+                actions.append({0: player.username + " n'a pas assez de mana pour jouer une carte "})
+
+            Acalc = playerAcard.damage + playerAcard.health + playerAcard.cost
+            Bcalc = playerBcard.damage + playerBcard.health + playerBcard.cost
+
+            if Acalc > Bcalc:
+                playerBhp -= playerAcard.damage
+                actions.append({0: player.username + " a perdu " + str(
+                    playerAcard.damage) + " points de vie"})
+            elif Acalc == Bcalc:
+                rand = randint(0, 1)
+                if rand == 0:
+                    playerBhp -= playerAcard.damage
+                    actions.append({0: player.username + " a perdu " + str(
+                        playerAcard.damage) + " points de vie"})
+                else:
+                    playerAhp -= playerBcard.damage
+                    actions.append({0: request.user.username + " a perdu " + str(
+                        playerBcard.damage) + " points de vie"})
+            else:
+                playerAhp -= playerBcard.damage
+                actions.append({0: request.user.username + " a perdu " + str(
+                    playerBcard.damage) + " points de vie"})
+
+            if playerAmana < 9:
+                playerAmana += 1
+            if playerBmana < 9:
+                playerBmana += 1
+
+            if playerAhp <= 0:
+                results = -1
+                game = Game.objects.create(player=request.user, opponent=player, result=-1, round=turn)
+
+            if playerBhp <= 0:
+                results = 1
+                game = Game.objects.create(player=request.user, opponent=player, result=1, round=turn)
+
+        return render(request, 'hearthstone/game-results.html',
+                      {'game': game, 'actions': actions})
+
+    else:
+        allPlayers = Profile.objects.exclude(user=request.user.pk)
+
+        playablePlayers = []
+
+        for player in allPlayers:
+            playable = False
+
+            decks = Deck.objects.all().filter(owner=player.user)
+
+            for deck in decks:
+                count = 0
+
+                cardsDeck = deck.cardsdeck_set.all()
+
+                for cardDeck in cardsDeck:
+                    count += cardDeck.quantity
+
+                if count == 30:
+                    playable = True
+
+            if playable:
+                playablePlayers.append(player)
+
+        myDecks = Deck.objects.all().filter(owner=request.user)
+
+        playableDecks = []
+
+        for deck in myDecks:
+            count = 0
+            cardsDeck = deck.cardsdeck_set.all()
+
+            for cardDeck in cardsDeck:
+                count += cardDeck.quantity
+
+            if count == 30:
+                playableDecks.append(deck)
+
+        return render(request, 'hearthstone/game.html',
+                      {'playablePlayers': playablePlayers, 'playableDecks': playableDecks})
 
 
 def card(request, card_id):
@@ -334,13 +476,14 @@ def topic(request, topic_id):
 
     return render(request, 'forum/topic.html', context)
 
+
 def actu(request):
     followeds = Follow.objects.filter(user_id=request.user.id)
     actus = []
     for followed in followeds:
-        actu_of_friend = Actu.objects.all().filter(user_id=followed.followed_id).filter(Q(created_at__gte=followed.created_at)|Q(created_at=None))
+        actu_of_friend = Actu.objects.all().filter(user_id=followed.followed_id).filter(
+            Q(created_at__gte=followed.created_at) | Q(created_at=None))
         actus.append(actu_of_friend)
 
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     return render(request, 'hearthstone/actu.html', {'actus': actus, 'followeds': followeds})
-

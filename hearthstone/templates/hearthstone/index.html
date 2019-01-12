@@ -2,38 +2,42 @@
 
 {% block content %}
 
-<!-- Jumbotron Header -->
-<header class="my-4">
-  <h1 class="display-3">Django Hearthstone</h1>
-  <a href="{% url 'game' %}" class="btn btn-lg">Jouer</a>
-</header>
+  <!-- Jumbotron Header -->
+  <header class="my-4">
+    <h1 class="display-3">Django Hearthstone</h1>
+    <a href="{% url 'game' %}" class="btn btn-lg">Jouer</a>
+  </header>
 
-<div class="row my-5">
-  <div class="col-md-12">
+  <div class="row my-5">
+    <div class="col-md-12">
 
-    {% if request.user.is_authenticated %}
-    <h2>Vos poussieres</h2>
-    <div class="credits mb-4">
-      <p>Il vous reste : {{ request.user.profile.credit }} poussieres.</p>
+      {% if request.user.is_authenticated %}
+        <h2>Vos poussieres</h2>
+        <div class="credits mb-4">
+          <p>Il vous reste : {{ request.user.profile.credit }} poussieres.</p>
 
-      {% if request.user.profile.credit >= 100 %}
-      <p><a href="{% url 'buyCards' %}" class="btn btn-sm">Acheter un paquet</a> <span class="small">Coût : 100 poussieres</span></p>
+          {% if request.user.profile.credit >= 100 %}
+            <p><a href="{% url 'buyCards' %}" class="btn btn-sm">Acheter un paquet</a> <span class="small">Coût : 100 poussieres</span>
+            </p>
+          {% endif %}
+
+        </div>
       {% endif %}
 
-    </div>
-    {% endif %}
+      <h2>Liste des 10 dernières parties</h2>
+      <div class="games row mb-5">
 
-    <h2>Liste des dernières parties</h2>
-    <div class="games mb-5">
+        {% for game in games %}
+          <div class="col-4"><p class="lead">Le {{ game.date }} :</div>
+          <div class="col-8">{{ game.player.username }} vs. {{ game.opponent.username }} Victoire de
+            {% if game.result == 1 %}{{ game.player.username }}{% else %}{{ game.opponent.username }}{% endif %}
+            en {{ game.round }} tours</p></div>
+        {% empty %}
+          <p>Aucune partie pour le moment.</p>
+        {% endfor %}
 
-      {% for game in games %}
-      <p class="lead">{{ game.user1.username }} vs. {{ game.user2.username }} <a class="small" href="{% url 'game' %}">Voir le match</a></p>
-      {% empty %}
-      <p>Aucune partie pour le moment.</p>
-      {% endfor %}
-
+      </div>
     </div>
   </div>
-</div>
 
 {% endblock content %}

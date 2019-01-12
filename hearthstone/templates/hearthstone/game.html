@@ -1,13 +1,73 @@
 {% extends "hearthstone/base.html" %}
 
 {% block content %}
-<div class="row my-5">
-  <div class="col-md-12">
-    <h1>Jouer au jeu</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="row my-5">
+      <div class="col-md-12">
+        <h1>Jouer au jeu</h1>
+      </div>
+    </div>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aspernatur aut corporis debitis dolore eius fugiat incidunt iusto laboriosam nesciunt nisi nostrum qui, vel voluptatibus voluptatum. Facilis nihil quis quod.</p>
-  </div>
-</div>
+    <div class="row my-5">
+      <div class="col-md-12">
+        <h2>Choisir un Adversaire</h2>
+        <div class="row">
+          {% for player in playablePlayers %}
+            <div class="col-3 text-center my-4">
+              <label for="player_{{ player.user.id }}">
+                <div class="single-player">
+                  <h4 class="title">{{ player.user.username }}</h4>
+                  <img
+                    src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1547202285/django/hero.png"
+                    alt="">
+                </div>
+              </label>
+              <br>
+              <input id="player_{{ player.user.id }}" type="radio" name="player" value="{{ player.user.id }}">
+            </div>
+          {% empty %}
+            <div class="col-md-12">
+              <p>Vous n'avez aucun deck de pret</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row my-5">
+      <div class="col-md-12">
+        <h2>Choisir un Deck</h2>
+        <div class="row">
+          {% for deck in playableDecks %}
+            <div class="col-2 text-center my-4">
+              <label for="deck_{{ deck.id }}">
+                <div class="single-deck">
+                  <h4 class="title">{{ deck.title }}</h4>
+                  <img
+                    src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/v1547202285/django/card-pack.png"
+                    alt="">
+                </div>
+              </label>
+              <input id="deck_{{ deck.id }}" type="radio" name="deck" value="{{ deck.id }}">
+            </div>
+          {% empty %}
+            <div class="col-md-12">
+              <p>Vous n'avez aucun deck de pret</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col center">
+        <input type="submit" class="btn fight" value="Lancer la partie">
+      </div>
+    </div>
+  </form>
+
 
 {% endblock content %}
 
