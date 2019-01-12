@@ -33,9 +33,17 @@
             <td>{{ exchange.user2.username }}</td>
           {% endif %}
 
-          <td><img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ exchange.card1.slug }}.png" alt="{{ exchange.card1.title }}" class="single-card__link__img">
+          <td>
+            <span class="single-card__link">
+            <h4 class="title">{{ exchange.card1.title }}</h4>
+            <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ exchange.card1.slug }}.png" alt="{{ exchange.card1.title }}" class="single-card__link__img">
+            </span>
           </td>
-          <td><img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ exchange.card2.slug }}.png" alt="{{ exchange.card2.title }}" class="single-card__link__img">
+          <td>
+            <span class="single-card__link">
+            <h4 class="title">{{ exchange.card2.title }}</h4>
+            <img src="https://res.cloudinary.com/dglr48luk/image/upload/c_scale,q_auto:eco,w_235/d_unknown.png/v1540542198/django/{{ exchange.card2.slug }}.png" alt="{{ exchange.card2.title }}" class="single-card__link__img">
+            </span>
           </td>
 
           {% if exchange.user1_status == None %}
