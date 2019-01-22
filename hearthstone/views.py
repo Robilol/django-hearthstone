@@ -188,13 +188,11 @@ def game(request):
             if playerAhp <= 0:
                 results = -1
 
-                opponentProfile = get_object_or_404(Profile, pk=player.pk)
-                opponentProfile.elo += 10
-                opponentProfile.save()
+                player.profile.elo += 10
+                player.profile.save()
 
-                userProfile = get_object_or_404(Profile, pk=request.user.pk)
-                userProfile.elo -= 10
-                userProfile.save()
+                request.user.profile.elo -= 10
+                request.user.profile.save()
 
 
                 game = Game.objects.create(player=request.user, opponent=player, result=-1, round=turn)
@@ -202,13 +200,11 @@ def game(request):
             if playerBhp <= 0:
                 results = 1
 
-                opponentProfile = get_object_or_404(Profile, pk=player.pk)
-                opponentProfile.elo += 10
-                opponentProfile.save()
+                player.profile.elo -= 10
+                player.profile.save()
 
-                userProfile = get_object_or_404(Profile, pk=request.user.pk)
-                userProfile.elo -= 10
-                userProfile.save()
+                request.user.profile.elo += 10
+                request.user.profile.save()
 
                 game = Game.objects.create(player=request.user, opponent=player, result=1, round=turn)
 
@@ -423,7 +419,7 @@ def updateDeck(request, deck_id):
 
 
 def playerAll(request):
-    players = Profile.objects.all()
+    players = Profile.objects.all().order_by('elo').reverse()
 
     follows = Follow.objects.filter(user=request.user.pk)
 
