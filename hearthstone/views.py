@@ -189,6 +189,7 @@ def game(request):
                 results = -1
 
                 player.profile.elo += 10
+                player.profile.credit += 30
                 player.profile.save()
 
                 request.user.profile.elo -= 10
@@ -204,6 +205,7 @@ def game(request):
                 player.profile.save()
 
                 request.user.profile.elo += 10
+                request.user.profile.credit += 30
                 request.user.profile.save()
 
                 game = Game.objects.create(player=request.user, opponent=player, result=1, round=turn)
