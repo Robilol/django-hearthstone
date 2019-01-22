@@ -111,7 +111,7 @@ class Follow(models.Model):
         return self.content
 
 
-@receiver(post_delete, sender=Follow)
+@receiver(post_save, sender=Follow)
 def actu_from_following(sender, instance, **kwargs):
     user = get_object_or_404(User, pk=instance.user_id)
     followed = get_object_or_404(User, pk=instance.followed_id)
@@ -140,6 +140,19 @@ class Game(models.Model):
     round = models.IntegerField(null=False, blank=True)
     result = models.IntegerField(null=False, blank=True)  # 1 player1 |  -1 player2
     date = models.DateTimeField(default=timezone.now)
+
+@receiver(post_save, sender=Game)
+def actu_from_game(sender, instance, **kwargs):
+    user = get_object_or_404(User, pk=instance.player_id)
+    opponent = get_object_or_404(User, pk=instance.opponent_id)
+    if (instance.result == 1):
+        Actu.objects.create(user=user, content='Votre ami ' + user.username + ' a gagné son match contre: ' + opponent.username)
+    else:
+        Actu.objects.create(user=user, content='Votre ami ' + user.username + ' a perdu son match contre: ' + opponent.username)
+    if (instance.result == 1):
+        Actu.objects.create(user=opponent, content='Votre ami ' + opponent.username + ' a perdu son match contre: ' + user.username)
+    else:
+        Actu.objects.create(user=opponent, content='Votre ami ' + opponent.username + ' a gagné son match contre: ' + user.username)
 
 
 class ExchangeCard(models.Model):
