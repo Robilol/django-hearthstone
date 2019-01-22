@@ -187,10 +187,29 @@ def game(request):
 
             if playerAhp <= 0:
                 results = -1
+
+                opponentProfile = get_object_or_404(Profile, pk=player.pk)
+                opponentProfile.elo += 10
+                opponentProfile.save()
+
+                userProfile = get_object_or_404(Profile, pk=request.user.pk)
+                userProfile.elo -= 10
+                userProfile.save()
+
+
                 game = Game.objects.create(player=request.user, opponent=player, result=-1, round=turn)
 
             if playerBhp <= 0:
                 results = 1
+
+                opponentProfile = get_object_or_404(Profile, pk=player.pk)
+                opponentProfile.elo += 10
+                opponentProfile.save()
+
+                userProfile = get_object_or_404(Profile, pk=request.user.pk)
+                userProfile.elo -= 10
+                userProfile.save()
+
                 game = Game.objects.create(player=request.user, opponent=player, result=1, round=turn)
 
         return render(request, 'hearthstone/game-results.html',
@@ -404,7 +423,7 @@ def updateDeck(request, deck_id):
 
 
 def playerAll(request):
-    players = Profile.objects.exclude(user=request.user.pk)
+    players = Profile.objects.all()
 
     follows = Follow.objects.filter(user=request.user.pk)
 

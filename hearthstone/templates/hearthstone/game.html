@@ -24,7 +24,7 @@
                 </div>
               </label>
               <br>
-              <input id="player_{{ player.user.id }}" type="radio" name="player" value="{{ player.user.id }}">
+              <input id="player_{{ player.user.id }}" type="radio" name="player" value="{{ player.user.id }}" required>
             </div>
           {% empty %}
             <div class="col-md-12">
@@ -50,7 +50,7 @@
                     alt="">
                 </div>
               </label>
-              <input id="deck_{{ deck.id }}" type="radio" name="deck" value="{{ deck.id }}">
+              <input id="deck_{{ deck.id }}" type="radio" name="deck" value="{{ deck.id }}" required>
             </div>
           {% empty %}
             <div class="col-md-12">
